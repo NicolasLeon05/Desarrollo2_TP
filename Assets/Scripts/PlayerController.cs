@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _force;
     [SerializeField] private float _jumpForce;
 
-    [SerializeField] private float jumpBufferTime = 0.3f; // Tiempo que dura el buffer
+    [SerializeField] private float jumpBufferTime = 0.1f;
 
     private InputBuffer jumpBuffer;
 

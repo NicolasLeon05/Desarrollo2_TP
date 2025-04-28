@@ -525,7 +525,7 @@ MonoBehaviour:
   _speed: 10
   _force: 10
   _jumpForce: 5
-  jumpBufferTime: 0.2
+  jumpBufferTime: 0.1
 --- !u!114 &805366008
 MonoBehaviour:
   m_ObjectHideFlags: 0
