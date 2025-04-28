@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference jumpAction;
+    [SerializeField] private InputActionReference dashAction;
 
     [SerializeField] private float _speed;
     [SerializeField] private float _force;
@@ -30,9 +31,10 @@ public class PlayerController : MonoBehaviour
         moveAction.action.canceled += OnMove;
 
         jumpAction.action.performed += OnJump;
+        dashAction.action.performed += OnDash;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (jumpBuffer.Consume())
         {
@@ -47,14 +49,27 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(InputAction.CallbackContext obj)
     {
+        ForceRequest request = RequestHorizontalForce(obj);
+
+        player.RequestConstantForce(request);
+    }
+
+    private void OnDash(InputAction.CallbackContext obj)
+    {
+        ForceRequest request = RequestHorizontalForce(obj);
+
+        player.RequestInstantForce(request);
+    }
+
+    private ForceRequest RequestHorizontalForce(InputAction.CallbackContext obj)
+    {
         var request = new ForceRequest();
         var horizontalInput = obj.ReadValue<Vector2>();
 
         request.direction = new Vector3(horizontalInput.x, 0, horizontalInput.y);
         request.speed = _speed;
         request.force = _force;
-
-        player.RequestConstantForce(request);
+        return request;
     }
 
     private void OnJump(InputAction.CallbackContext obj)

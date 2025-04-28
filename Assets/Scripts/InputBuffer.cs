@@ -18,18 +18,17 @@ public class InputBuffer
 
     public bool Consume()
     {
-        // Limpiamos inputs expirados
         while (inputTimestamps.Count > 0)
         {
-            float inputTime = inputTimestamps.Peek(); // Mira el primero sin sacarlo
+            float inputTime = inputTimestamps.Peek();
 
             if (Time.time - inputTime <= bufferTime)
             {
-                inputTimestamps.Dequeue(); // Sacamos el input porque ya lo usamos
+                inputTimestamps.Dequeue();
                 return true;
             }
 
-            inputTimestamps.Dequeue(); // Si expiró, igual lo sacamos
+            inputTimestamps.Dequeue();
         }
 
         return false;

@@ -13,13 +13,12 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxJumps = 2;
     public int jumps;
 
-    private float groundIgnoreTime = 0.1f;
-    private float lastJumpTime;
+    [SerializeField] private float lastGroundTouchedTime;
     private Vector3 jumpRayOrigin;
     private Vector3 JumpRayDirection;
     [SerializeField] private float jumpRayDistance = 0.5f;
 
-    private float coyoteTime = 0.15f;
+    [SerializeField] private float coyoteTime = 0.15f;
 
     private void Awake()
     {
@@ -46,22 +45,46 @@ public class Player : MonoBehaviour
         if (constantForceRequest != null)
             _rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.force, ForceMode.Force);
 
+        if (instantForceRequest != null)
+            _rigidBody.AddForce(instantForceRequest.direction * instantForceRequest.force, ForceMode.Impulse);
+
+        if (CheckGrounded())
+            jumps = 0;
+
         if (jumpRequest != null)
         {
-            lastJumpTime = Time.time;
-
-            if (CheckGrounded() || Time.time - lastJumpTime <= coyoteTime && jumps < maxJumps)
+            if (jumps < maxJumps)
             {
                 jumps++;
                 ResetJumpVelocity();
 
                 _rigidBody.AddForce(jumpRequest.direction * jumpRequest.force, ForceMode.Impulse);
                 jumpRequest = null;
-                Debug.Log("JUMP");
             }
         }
 
-        Debug.Log(jumps);
+    }
+
+    private bool CheckGrounded()
+    {
+        jumpRayOrigin = transform.position + Vector3.down * 0.5f;
+        JumpRayDirection = Vector3.down;
+
+        if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
+        {
+            lastGroundTouchedTime = Time.time;
+            return true;
+        }
+        else if (CheckCoyoteTime())
+            return true;
+
+        return false;
+    }
+
+
+    private bool CheckCoyoteTime()
+    {
+        return Time.time - lastGroundTouchedTime <= coyoteTime;
     }
 
     private void ResetJumpVelocity()
@@ -71,27 +94,9 @@ public class Player : MonoBehaviour
         _rigidBody.linearVelocity = velocity;
     }
 
-    private bool CheckGrounded()
+    private void OnDrawGizmos()
     {
-        if (Time.time - lastJumpTime < groundIgnoreTime)
-            return true;
-
-        Debug.Log("paso 1");
-
-        jumpRayOrigin = transform.position + Vector3.down * 0.5f;
-        JumpRayDirection = Vector3.down;
-
-        if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
-        {
-            jumps = 0;
-            Debug.DrawRay(jumpRayOrigin, JumpRayDirection * jumpRayDistance, Color.red, 0.1f);
-            return true;
-        }
-        else if (jumps == 0)
-        {
-            jumps = maxJumps;
-        }
-
-        return false;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(jumpRayOrigin, jumpRayOrigin + JumpRayDirection * jumpRayDistance);
     }
 }
