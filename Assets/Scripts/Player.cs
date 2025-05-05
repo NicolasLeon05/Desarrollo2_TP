@@ -13,7 +13,8 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidBody;
 
     [SerializeField] private int maxJumps = 2;
-    public int jumps;
+    private int jumps;
+    private bool isOnGround;
 
     //Ground detection
     private float groundIgnoreTime = 0.1f;
@@ -25,10 +26,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.2f;
 
     //Dash
+    Vector3 previousVelocity;
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float dashDuration = 0.3f;
     private float dashStartTime = 0f;
     private bool dashActivated = false;
+    private bool canDash = true;
 
 
     private void Awake()
@@ -46,6 +49,7 @@ public class Player : MonoBehaviour
         constantForceRequest = forceRequest;
     }
 
+
     private void FixedUpdate()
     {
         Debug.Log(_rigidBody.linearVelocity);
@@ -59,31 +63,26 @@ public class Player : MonoBehaviour
             _rigidBody.useGravity = true;
         }
 
+        CheckGrounded();
 
         if (constantForceRequest != null)
             if (!IsOverVelocityLimit())
                 _rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
 
         //Dash
-        if (dashRequest != null)
+        if (isOnGround && !canDash)
         {
-            Vector3 dashVelocity = dashRequest.direction.normalized * dashRequest.force;
-            _rigidBody.linearVelocity = new Vector3(dashVelocity.x, 0, dashVelocity.z);
-
-            _rigidBody.useGravity = false;
-
+            canDash = true;
             dashRequest = null;
-            dashStartTime = Time.time;
-            dashActivated = true;
         }
+        if (dashRequest != null && canDash)
+            Dash();
+
 
         //Jump
-        CheckGrounded();
         if (controller.HasBufferedJump())
-        {
-            bool onGround = (Time.time - lastGroundedTime <= coyoteTime);
-
-            if (onGround)
+        {       
+            if (isOnGround)
             {
                 Jump();
             }
@@ -95,15 +94,26 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    private void Dash()
+    {
+        previousVelocity = _rigidBody.linearVelocity;
+        Vector3 dashVelocity = dashRequest.direction.normalized * dashRequest.force;
+        _rigidBody.linearVelocity = new Vector3(dashVelocity.x, 0, dashVelocity.z);
+
+        _rigidBody.useGravity = false;
+
+        dashActivated = true;
+        canDash = false;
+        dashStartTime = Time.time;
+        
+        dashRequest = null;
+    }
+
     private void ResetVelocity()
     {
-        Vector3 velocity = _rigidBody.linearVelocity;
-        Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
-        horizontal = horizontal.normalized * maxSpeed;
-
-        velocity.x = horizontal.x;
-        velocity.z = horizontal.z;
-        _rigidBody.linearVelocity = velocity;
+        Vector3 newVelocity = new Vector3(previousVelocity.x, 0, previousVelocity.z);
+        _rigidBody.linearVelocity = newVelocity;
     }
 
     private bool IsDashing()
@@ -151,6 +161,8 @@ public class Player : MonoBehaviour
             jumps = 0;
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection * jumpRayDistance, Color.red, 0.1f);
         }
+
+        isOnGround = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
 }
