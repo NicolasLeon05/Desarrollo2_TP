@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     ForceRequest constantForceRequest;
     ForceRequest dashRequest;
 
-    private Rigidbody _rigidBody;
+    private Rigidbody rigidBody;
 
     [SerializeField] private int maxJumps = 2;
     private int jumps;
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _rigidBody = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     public void RequestDash(ForceRequest forceRequest)
@@ -52,22 +52,20 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(_rigidBody.linearVelocity);
-
         if (IsDashing())
             return;
         else if (dashActivated)
         {
             ResetVelocity();
             dashActivated = false;
-            _rigidBody.useGravity = true;
+            rigidBody.useGravity = true;
         }
 
         CheckGrounded();
 
         if (constantForceRequest != null)
             if (!IsOverVelocityLimit())
-                _rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
+                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
 
         //Dash
         if (isOnGround && !canDash)
@@ -97,11 +95,11 @@ public class Player : MonoBehaviour
 
     private void Dash()
     {
-        previousVelocity = _rigidBody.linearVelocity;
+        previousVelocity = rigidBody.linearVelocity;
         Vector3 dashVelocity = dashRequest.direction.normalized * dashRequest.force;
-        _rigidBody.linearVelocity = new Vector3(dashVelocity.x, 0, dashVelocity.z);
+        rigidBody.linearVelocity = new Vector3(dashVelocity.x, 0, dashVelocity.z);
 
-        _rigidBody.useGravity = false;
+        rigidBody.useGravity = false;
 
         dashActivated = true;
         canDash = false;
@@ -113,7 +111,7 @@ public class Player : MonoBehaviour
     private void ResetVelocity()
     {
         Vector3 newVelocity = new Vector3(previousVelocity.x, 0, previousVelocity.z);
-        _rigidBody.linearVelocity = newVelocity;
+        rigidBody.linearVelocity = newVelocity;
     }
 
     private bool IsDashing()
@@ -123,7 +121,7 @@ public class Player : MonoBehaviour
 
     private bool IsOverVelocityLimit()
     {
-        Vector3 horizontal = new Vector3(_rigidBody.linearVelocity.x, 0, _rigidBody.linearVelocity.z);
+        Vector3 horizontal = new Vector3(rigidBody.linearVelocity.x, 0, rigidBody.linearVelocity.z);
         return horizontal.magnitude > maxSpeed;
     }
 
@@ -133,7 +131,7 @@ public class Player : MonoBehaviour
         ResetJumpVelocity();
 
         float jumpForce = controller.GetJumpForce();
-        _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
         controller.ConsumeBufferedJump();
 
@@ -142,9 +140,9 @@ public class Player : MonoBehaviour
 
     private void ResetJumpVelocity()
     {
-        Vector3 velocity = _rigidBody.linearVelocity;
+        Vector3 velocity = rigidBody.linearVelocity;
         velocity.y = 0;
-        _rigidBody.linearVelocity = velocity;
+        rigidBody.linearVelocity = velocity;
     }
 
     private void CheckGrounded()

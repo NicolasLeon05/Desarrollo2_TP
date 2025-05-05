@@ -8,9 +8,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference jumpAction;
     [SerializeField] private InputActionReference dashAction;
 
-    [SerializeField] private float _speed;
-    [SerializeField] private float _force;
-    [SerializeField] private float _jumpForce;
+    [SerializeField] private float speed;
+    [SerializeField] private float force;
+    [SerializeField] private float jumpForce;
 
     Vector3 playerDirection = new Vector3(0, 0, 0);
 
@@ -52,8 +52,8 @@ public class PlayerController : MonoBehaviour
         playerDirection = new Vector3(horizontalInput.x, 0, horizontalInput.y);
 
         request.direction = playerDirection;
-        request.speed = _speed;
-        request.force = _force;
+        request.speed = speed;
+        request.force = force;
 
         player.RequestConstantForce(request);
     }
@@ -64,8 +64,8 @@ public class PlayerController : MonoBehaviour
         var request = new ForceRequest();
 
         request.direction = new Vector3(playerDirection.x, 0, playerDirection.z);
-        request.speed = _speed;
-        request.force = _force;
+        request.speed = speed;
+        request.force = force;
 
         player.RequestDash(request);
     }
@@ -88,6 +88,6 @@ public class PlayerController : MonoBehaviour
 
     public float GetJumpForce()
     {
-        return _jumpForce;
+        return jumpForce;
     }
 }

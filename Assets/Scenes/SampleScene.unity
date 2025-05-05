@@ -523,9 +523,9 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   dashAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _speed: 10
-  _force: 20
-  _jumpForce: 5
+  speed: 10
+  force: 20
+  jumpForce: 6
   jumpBufferTime: 0.2
 --- !u!114 &805366008
 MonoBehaviour:
@@ -541,11 +541,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 805366007}
   maxJumps: 2
-  jumps: 0
   jumpRayDistance: 0.6
   coyoteTime: 0.2
   maxSpeed: 10
-  dashDuration: 0.3
+  dashDuration: 0.25
 --- !u!54 &805366009
 Rigidbody:
   m_ObjectHideFlags: 0
