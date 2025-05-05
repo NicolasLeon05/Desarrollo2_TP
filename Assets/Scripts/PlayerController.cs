@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -12,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _force;
     [SerializeField] private float _jumpForce;
 
-    [SerializeField] private float jumpBufferTime = 0.3f; // Tiempo que dura el buffer
+    [SerializeField] private float jumpBufferTime = 0.2f;
 
     private InputBuffer jumpBuffer;
 
@@ -23,25 +22,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (moveAction == null)
-            return;
-
-        moveAction.action.performed += OnMove;
-        moveAction.action.canceled += OnMove;
-
-        jumpAction.action.performed += OnJump;
-    }
-
-    private void Update()
-    {
-        if (jumpBuffer.Consume())
+        if (moveAction != null)
         {
-            var request = new ForceRequest();
-            request.direction = Vector3.up;
-            request.speed = _speed;
-            request.force = _jumpForce;
+            moveAction.action.performed += OnMove;
+            moveAction.action.canceled += OnMove;
+        }
 
-            player.RequestJump(request);
+        if (jumpAction != null)
+        {
+            jumpAction.action.performed += OnJump;
         }
     }
 
@@ -60,5 +49,20 @@ public class PlayerController : MonoBehaviour
     private void OnJump(InputAction.CallbackContext obj)
     {
         jumpBuffer.Register();
+    }
+
+    public bool HasBufferedJump()
+    {
+        return jumpBuffer.Peek();
+    }
+
+    public void ConsumeBufferedJump()
+    {
+        jumpBuffer.Consume();
+    }
+
+    public float GetJumpForce()
+    {
+        return _jumpForce;
     }
 }

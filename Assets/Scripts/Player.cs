@@ -6,14 +6,19 @@ public class Player : MonoBehaviour
 {
     ForceRequest constantForceRequest;
     ForceRequest instantForceRequest;
-    ForceRequest jumpRequest;
+    //ForceRequest jumpRequest;
 
+    [SerializeField] PlayerController controller;
 
     private float groundIgnoreTime = 0.1f;
     private float lastJumpTime;
     private Vector3 jumpRayOrigin;
     private Vector3 JumpRayDirection;
     [SerializeField] private float jumpRayDistance = 0.5f;
+
+    private float lastGroundedTime;
+    [SerializeField] private float coyoteTime = 0.2f; // 200ms de margen
+    private bool isGrounded;
 
     private Rigidbody _rigidBody;
 
@@ -30,10 +35,10 @@ public class Player : MonoBehaviour
         instantForceRequest = forceRequest;
     }
 
-    public void RequestJump(ForceRequest forceRequest)
-    {
-        jumpRequest = forceRequest;
-    }
+    //public void RequestJump(ForceRequest forceRequest)
+    //{
+    //    jumpRequest = forceRequest;
+    //}
 
     public void RequestConstantForce(ForceRequest forceRequest)
     {
@@ -47,19 +52,35 @@ public class Player : MonoBehaviour
         if (constantForceRequest != null)
             _rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.force, ForceMode.Force);
 
-        if (jumpRequest != null)
+        if (controller.HasBufferedJump())
         {
-            if (jumps < maxJumps)
-            {
-                jumps++;
-                ResetJumpVelocity();
+            bool onGround = (Time.time - lastGroundedTime <= coyoteTime);
 
-                _rigidBody.AddForce(jumpRequest.direction * jumpRequest.force, ForceMode.Impulse);
-                jumpRequest = null;
-                lastJumpTime = Time.time;
-                Debug.Log("JUMP");
+            if (onGround)
+            {
+                Jump();
             }
-        }  
+            else if (jumps < maxJumps)
+            {
+                jumps = maxJumps - 1;
+                Jump();
+            }
+        }
+
+        Debug.Log(_rigidBody.linearVelocity.y);
+    }
+
+    private void Jump()
+    {
+        jumps++;
+        ResetJumpVelocity();
+
+        float jumpForce = controller.GetJumpForce();
+        _rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        controller.ConsumeBufferedJump();
+
+        lastJumpTime = Time.time;
     }
 
     private void ResetJumpVelocity()
@@ -79,8 +100,15 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
         {
+            isGrounded = true;
+            lastGroundedTime = Time.time;
             jumps = 0;
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection * jumpRayDistance, Color.red, 0.1f);
         }
+        else
+        {
+            isGrounded = false;
+        }
     }
+
 }

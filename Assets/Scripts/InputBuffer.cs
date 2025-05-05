@@ -13,25 +13,37 @@ public class InputBuffer
 
     public void Register()
     {
-        inputTimestamps.Enqueue(Time.time);
+        CleanExpiredInputs();
+
+        if (inputTimestamps.Count == 0)
+            inputTimestamps.Enqueue(Time.time);
     }
 
-    public bool Consume()
+    public bool Peek()
     {
-        // Limpiamos inputs expirados
+        CleanExpiredInputs();
+        return inputTimestamps.Count > 0;
+    }
+
+    public void Consume()
+    {
+        CleanExpiredInputs();
+
+        if (inputTimestamps.Count > 0)
+        {
+            inputTimestamps.Dequeue();
+        }
+    }
+
+    private void CleanExpiredInputs()
+    {
         while (inputTimestamps.Count > 0)
         {
-            float inputTime = inputTimestamps.Peek(); // Mira el primero sin sacarlo
-
-            if (Time.time - inputTime <= bufferTime)
-            {
-                inputTimestamps.Dequeue(); // Sacamos el input porque ya lo usamos
-                return true;
-            }
-
-            inputTimestamps.Dequeue(); // Si expiró, igual lo sacamos
+            float inputTime = inputTimestamps.Peek();
+            if (Time.time - inputTime > bufferTime)
+                inputTimestamps.Dequeue();
+            else
+                break;
         }
-
-        return false;
     }
 }
