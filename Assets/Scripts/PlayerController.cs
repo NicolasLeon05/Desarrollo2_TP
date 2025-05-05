@@ -6,14 +6,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference jumpAction;
+    [SerializeField] private InputActionReference dashAction;
 
     [SerializeField] private float _speed;
     [SerializeField] private float _force;
     [SerializeField] private float _jumpForce;
 
-    [SerializeField] private float jumpBufferTime = 0.2f;
+    Vector3 playerDirection = new Vector3(0, 0, 0);
 
     private InputBuffer jumpBuffer;
+    [SerializeField] private float jumpBufferTime = 0.2f;
+
 
     private void Awake()
     {
@@ -32,20 +35,42 @@ public class PlayerController : MonoBehaviour
         {
             jumpAction.action.performed += OnJump;
         }
+
+        if (dashAction != null)
+        {
+            dashAction.action.performed += OnDash;
+            dashAction.action.canceled += OnDash;
+        }
     }
 
+    //MOVEMENT
     private void OnMove(InputAction.CallbackContext obj)
     {
         var request = new ForceRequest();
         var horizontalInput = obj.ReadValue<Vector2>();
 
-        request.direction = new Vector3(horizontalInput.x, 0, horizontalInput.y);
+        playerDirection = new Vector3(horizontalInput.x, 0, horizontalInput.y);
+
+        request.direction = playerDirection;
         request.speed = _speed;
         request.force = _force;
 
         player.RequestConstantForce(request);
     }
 
+
+    private void OnDash(InputAction.CallbackContext obj)
+    {
+        var request = new ForceRequest();
+
+        request.direction = new Vector3(playerDirection.x, 0, playerDirection.z);
+        request.speed = _speed;
+        request.force = _force;
+
+        player.RequestDash(request);
+    }
+
+    //JUMP
     private void OnJump(InputAction.CallbackContext obj)
     {
         jumpBuffer.Register();

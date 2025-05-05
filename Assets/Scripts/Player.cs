@@ -1,44 +1,45 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 
 public class Player : MonoBehaviour
 {
-    ForceRequest constantForceRequest;
-    ForceRequest instantForceRequest;
-    //ForceRequest jumpRequest;
-
     [SerializeField] PlayerController controller;
 
-    private float groundIgnoreTime = 0.1f;
-    private float lastJumpTime;
-    private Vector3 jumpRayOrigin;
-    private Vector3 JumpRayDirection;
-    [SerializeField] private float jumpRayDistance = 0.5f;
-
-    private float lastGroundedTime;
-    [SerializeField] private float coyoteTime = 0.2f; // 200ms de margen
-    private bool isGrounded;
+    ForceRequest constantForceRequest;
+    ForceRequest dashRequest;
 
     private Rigidbody _rigidBody;
 
     [SerializeField] private int maxJumps = 2;
     public int jumps;
 
+    //Ground detection
+    private float groundIgnoreTime = 0.1f;
+    private float lastJumpTime;
+    private float lastGroundedTime;
+    private Vector3 jumpRayOrigin;
+    private Vector3 JumpRayDirection;
+    [SerializeField] private float jumpRayDistance = 0.5f;
+    [SerializeField] private float coyoteTime = 0.2f;
+
+    //Dash
+    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float dashDuration = 0.3f;
+    private float dashStartTime = 0f;
+    private bool dashActivated = false;
+
+
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody>();
     }
 
-    public void RequestInstantForce(ForceRequest forceRequest)
+    public void RequestDash(ForceRequest forceRequest)
     {
-        instantForceRequest = forceRequest;
+        dashRequest = forceRequest;
     }
-
-    //public void RequestJump(ForceRequest forceRequest)
-    //{
-    //    jumpRequest = forceRequest;
-    //}
 
     public void RequestConstantForce(ForceRequest forceRequest)
     {
@@ -47,11 +48,37 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CheckGrounded();
+        Debug.Log(_rigidBody.linearVelocity);
+
+        if (IsDashing())
+            return;
+        else if (dashActivated)
+        {
+            ResetVelocity();
+            dashActivated = false;
+            _rigidBody.useGravity = true;
+        }
+
 
         if (constantForceRequest != null)
-            _rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.force, ForceMode.Force);
+            if (!IsOverVelocityLimit())
+                _rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
 
+        //Dash
+        if (dashRequest != null)
+        {
+            Vector3 dashVelocity = dashRequest.direction.normalized * dashRequest.force;
+            _rigidBody.linearVelocity = new Vector3(dashVelocity.x, 0, dashVelocity.z);
+
+            _rigidBody.useGravity = false;
+
+            dashRequest = null;
+            dashStartTime = Time.time;
+            dashActivated = true;
+        }
+
+        //Jump
+        CheckGrounded();
         if (controller.HasBufferedJump())
         {
             bool onGround = (Time.time - lastGroundedTime <= coyoteTime);
@@ -66,8 +93,28 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
+    }
 
-        Debug.Log(_rigidBody.linearVelocity.y);
+    private void ResetVelocity()
+    {
+        Vector3 velocity = _rigidBody.linearVelocity;
+        Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
+        horizontal = horizontal.normalized * maxSpeed;
+
+        velocity.x = horizontal.x;
+        velocity.z = horizontal.z;
+        _rigidBody.linearVelocity = velocity;
+    }
+
+    private bool IsDashing()
+    {
+        return Time.time - dashStartTime < dashDuration;
+    }
+
+    private bool IsOverVelocityLimit()
+    {
+        Vector3 horizontal = new Vector3(_rigidBody.linearVelocity.x, 0, _rigidBody.linearVelocity.z);
+        return horizontal.magnitude > maxSpeed;
     }
 
     private void Jump()
@@ -100,14 +147,9 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
         {
-            isGrounded = true;
             lastGroundedTime = Time.time;
             jumps = 0;
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection * jumpRayDistance, Color.red, 0.1f);
-        }
-        else
-        {
-            isGrounded = false;
         }
     }
 
