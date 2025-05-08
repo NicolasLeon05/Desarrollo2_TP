@@ -12,11 +12,14 @@ public class Player : MonoBehaviour
 
     private Rigidbody rigidBody;
 
+    //Jump
     [SerializeField] private int maxJumps = 2;
     private int jumps;
-    private bool isOnGround;
+    private bool isOnAir;
 
     //Ground detection
+    private bool isOnCoyoteTime;
+    private bool isOnGround;
     private float groundIgnoreTime = 0.1f;
     private float lastJumpTime;
     private float lastGroundedTime;
@@ -56,7 +59,7 @@ public class Player : MonoBehaviour
             return;
         else if (dashActivated)
         {
-            ResetVelocity();
+            SetPreDashVelocity();
             dashActivated = false;
             rigidBody.useGravity = true;
         }
@@ -64,11 +67,24 @@ public class Player : MonoBehaviour
         CheckGrounded();
 
         if (constantForceRequest != null)
+        {
             if (!IsOverVelocityLimit())
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
 
+            constantForceRequest = null;
+        }
+        else
+        {
+            //Debug.Log("NOT MOVING");
+            if (isOnGround && !isOnAir)
+            {
+                rigidBody.linearVelocity = rigidBody.linearVelocity * (maxSpeed * 0.1f);
+                Debug.Log("aahhh");
+            }
+        }
+
         //Dash
-        if (isOnGround && !canDash)
+        if (isOnCoyoteTime && !canDash)
         {
             canDash = true;
             dashRequest = null;
@@ -79,8 +95,8 @@ public class Player : MonoBehaviour
 
         //Jump
         if (controller.HasBufferedJump())
-        {       
-            if (isOnGround)
+        {
+            if (isOnCoyoteTime)
             {
                 Jump();
             }
@@ -104,11 +120,11 @@ public class Player : MonoBehaviour
         dashActivated = true;
         canDash = false;
         dashStartTime = Time.time;
-        
+
         dashRequest = null;
     }
 
-    private void ResetVelocity()
+    private void SetPreDashVelocity()
     {
         Vector3 newVelocity = new Vector3(previousVelocity.x, 0, previousVelocity.z);
         rigidBody.linearVelocity = newVelocity;
@@ -127,6 +143,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        isOnAir = true;
         jumps++;
         ResetJumpVelocity();
 
@@ -155,12 +172,19 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
         {
+            isOnGround = true;
+            isOnAir = false;
             lastGroundedTime = Time.time;
             jumps = 0;
-            Debug.DrawRay(jumpRayOrigin, JumpRayDirection * jumpRayDistance, Color.red, 0.1f);
+            //Debug.Log("Touching ground");
+        }
+        else
+        {
+            isOnGround = false;
+            isOnAir = true;
         }
 
-        isOnGround = (Time.time - lastGroundedTime <= coyoteTime);
+        isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
 }

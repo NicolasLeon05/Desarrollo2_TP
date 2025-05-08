@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce;
 
     Vector3 playerDirection = new Vector3(0, 0, 0);
+    Vector2 rawMoveInput;
 
     private InputBuffer jumpBuffer;
     [SerializeField] private float jumpBufferTime = 0.2f;
@@ -43,19 +44,57 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //MOVEMENT
+    private void Update()
+    {
+        CheckMovement();
+    }
+
+    private void CheckMovement()
+    {
+        //There is an input
+        if (rawMoveInput.magnitude > 0.01f)
+        {
+            Vector3 inputDir = new Vector3(rawMoveInput.x, 0, rawMoveInput.y);
+
+            Transform camTransform = Camera.main.transform;
+            Vector3 camForward = camTransform.forward;
+            Vector3 camRight = camTransform.right;
+
+            camForward.y = 0f;
+            camRight.y = 0f;
+            camForward.Normalize();
+            camRight.Normalize();
+
+            Vector3 moveDir = camForward * inputDir.z + camRight * inputDir.x;
+
+            playerDirection = moveDir.normalized;
+
+            var request = new ForceRequest
+            {
+                direction = playerDirection,
+                speed = speed,
+                force = force
+            };
+
+            player.RequestConstantForce(request);
+        }
+        //else
+        //{
+        //    var request = new ForceRequest
+        //    {
+        //        direction = Vector3.zero,
+        //        speed = 0,
+        //        force = 0
+        //    };
+        //
+        //    player.RequestInstantForce(request);
+        //}
+    }
+
+    //MOVEMENT WITH ROTATION
     private void OnMove(InputAction.CallbackContext obj)
     {
-        var request = new ForceRequest();
-        var horizontalInput = obj.ReadValue<Vector2>();
-
-        playerDirection = new Vector3(horizontalInput.x, 0, horizontalInput.y);
-
-        request.direction = playerDirection;
-        request.speed = speed;
-        request.force = force;
-
-        player.RequestConstantForce(request);
+        rawMoveInput = obj.ReadValue<Vector2>();
     }
 
 
