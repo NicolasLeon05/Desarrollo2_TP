@@ -19,12 +19,12 @@ public class Player : MonoBehaviour
     //Ground detection
     private bool isOnCoyoteTime;
     private bool isOnGround;
-    private float groundIgnoreTime = 0.1f;
+    private float groundIgnoreTime = 0.3f;
     private float lastJumpTime;
     private float lastGroundedTime;
     private Vector3 jumpRayOrigin;
     private Vector3 JumpRayDirection;
-    [SerializeField] private float jumpRayDistance = 0.5f;
+    [SerializeField] private float jumpRayDistance = 0.15f;
     [SerializeField] private float coyoteTime = 0.2f;
 
     //Dash
@@ -71,10 +71,10 @@ public class Player : MonoBehaviour
 
         if (constantForceRequest != null)
         {
+            animator.SetBool("IsRunning", true);
+
             if (!IsOverVelocityLimit())
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
-
-            animator.SetBool("IsRunning", true);
             constantForceRequest = null;
         }
         else
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
             if (isOnGround)
             {
                 rigidBody.linearVelocity = rigidBody.linearVelocity * (0);
-                Debug.Log("aahhh");
+                //Debug.Log("aahhh");
             }
         }
 
@@ -176,17 +176,21 @@ public class Player : MonoBehaviour
     private void CheckGrounded()
     {
         if (Time.time - lastJumpTime < groundIgnoreTime)
+        {
+            isOnGround = false;
             return;
+        }
 
-        jumpRayOrigin = transform.position + Vector3.down * 0.5f;
+        jumpRayOrigin = transform.position + Vector3.up * 0.1f;
         JumpRayDirection = Vector3.down;
 
+        Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
         if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
         {
             isOnGround = true;
             lastGroundedTime = Time.time;
             jumps = 0;
-            //Debug.Log("Touching ground");
+            Debug.Log("RAYCAST HIT");
         }
         else
         {
