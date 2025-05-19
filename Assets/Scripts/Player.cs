@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
             //Debug.Log("not requesting movement");
             if (isOnGround)
             {
-                rigidBody.linearVelocity = rigidBody.linearVelocity * (maxSpeed * 0.09f);
+                rigidBody.linearVelocity = rigidBody.linearVelocity * (0);
                 Debug.Log("aahhh");
             }
         }
