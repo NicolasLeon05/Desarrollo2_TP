@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     //Jump
     [SerializeField] private int maxJumps = 2;
     private int jumps;
-    private bool isOnAir;
 
     //Ground detection
     private bool isOnCoyoteTime;
@@ -75,10 +74,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            //Debug.Log("NOT MOVING");
-            if (isOnGround && !isOnAir)
+            //Debug.Log("not requesting movement");
+            if (isOnGround)
             {
-                rigidBody.linearVelocity = rigidBody.linearVelocity * (maxSpeed * 0.1f);
+                rigidBody.linearVelocity = rigidBody.linearVelocity * (maxSpeed * 0.09f);
                 Debug.Log("aahhh");
             }
         }
@@ -89,6 +88,7 @@ public class Player : MonoBehaviour
             canDash = true;
             dashRequest = null;
         }
+
         if (dashRequest != null && canDash)
             Dash();
 
@@ -121,16 +121,22 @@ public class Player : MonoBehaviour
         canDash = false;
         dashStartTime = Time.time;
 
+        constantForceRequest = null;
         dashRequest = null;
     }
 
     private void SetPreDashVelocity()
     {
-        Vector3 newVelocity = new Vector3(previousVelocity.x, 0, previousVelocity.z);
+        if (previousVelocity.magnitude < 0.1f)
+            return;
+
+        Vector3 direction = transform.forward;
+        Vector3 newVelocity = direction * previousVelocity.magnitude;
+
         rigidBody.linearVelocity = newVelocity;
     }
 
-    private bool IsDashing()
+    public bool IsDashing()
     {
         return Time.time - dashStartTime < dashDuration;
     }
@@ -143,7 +149,6 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        isOnAir = true;
         jumps++;
         ResetJumpVelocity();
 
@@ -173,7 +178,6 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
         {
             isOnGround = true;
-            isOnAir = false;
             lastGroundedTime = Time.time;
             jumps = 0;
             //Debug.Log("Touching ground");
@@ -181,7 +185,6 @@ public class Player : MonoBehaviour
         else
         {
             isOnGround = false;
-            isOnAir = true;
         }
 
         isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
