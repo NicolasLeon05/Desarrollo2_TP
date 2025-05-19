@@ -36,9 +36,13 @@ public class Player : MonoBehaviour
     private bool canDash = true;
 
 
+    //Animations
+    Animator animator;
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     public void RequestDash(ForceRequest forceRequest)
@@ -70,10 +74,12 @@ public class Player : MonoBehaviour
             if (!IsOverVelocityLimit())
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
 
+            animator.SetBool("IsRunning", true);
             constantForceRequest = null;
         }
         else
         {
+            animator.SetBool("IsRunning", false);
             //Debug.Log("not requesting movement");
             if (isOnGround)
             {
