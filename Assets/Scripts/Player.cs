@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        animator.SetBool("isOnGround", true);
     }
 
     public void RequestDash(ForceRequest forceRequest)
@@ -83,7 +84,7 @@ public class Player : MonoBehaviour
             //Debug.Log("not requesting movement");
             if (isOnGround)
             {
-                rigidBody.linearVelocity = rigidBody.linearVelocity * (0);
+                rigidBody.linearVelocity = rigidBody.linearVelocity * (0.1f);
                 //Debug.Log("aahhh");
             }
         }
@@ -175,29 +176,34 @@ public class Player : MonoBehaviour
 
     private void CheckGrounded()
     {
+        //Ignores raycast right after jump
         if (Time.time - lastJumpTime < groundIgnoreTime)
         {
             isOnGround = false;
-            return;
-        }
 
-        jumpRayOrigin = transform.position + Vector3.up * 0.1f;
-        JumpRayDirection = Vector3.down;
-
-        Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
-        if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
-        {
-            isOnGround = true;
-            lastGroundedTime = Time.time;
-            jumps = 0;
-            Debug.Log("RAYCAST HIT");
         }
         else
         {
-            isOnGround = false;
+            jumpRayOrigin = transform.position + Vector3.up * 0.1f;
+            JumpRayDirection = Vector3.down;
+
+            Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
+            if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
+            {
+                isOnGround = true;
+
+                lastGroundedTime = Time.time;
+                jumps = 0;
+                Debug.Log("RAYCAST HIT");
+            }
+            else
+            {
+                isOnGround = false;
+            }
+
+            isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
         }
 
-        isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
 }

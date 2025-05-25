@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float force;
     [SerializeField] private float jumpForce;
 
-    Vector3 playerDirection = new Vector3(0, 0, 0);
+    Vector3 playerDirection = Vector3.zero;
     Vector2 rawMoveInput;
 
     private InputBuffer jumpBuffer;
@@ -54,20 +54,7 @@ public class PlayerController : MonoBehaviour
         //There is an input
         if (rawMoveInput.magnitude > 0.01f)
         {
-            Vector3 inputDir = new Vector3(rawMoveInput.x, 0, rawMoveInput.y);
-
-            Transform camTransform = Camera.main.transform;
-            Vector3 camForward = camTransform.forward;
-            Vector3 camRight = camTransform.right;
-
-            camForward.y = 0f;
-            camRight.y = 0f;
-            camForward.Normalize();
-            camRight.Normalize();
-
-            Vector3 moveDir = camForward * inputDir.z + camRight * inputDir.x;
-
-            playerDirection = moveDir.normalized;
+            RotatePlayerToCamera();
 
             var request = new ForceRequest
             {
@@ -78,17 +65,6 @@ public class PlayerController : MonoBehaviour
 
             player.RequestConstantForce(request);
         }
-        //else
-        //{
-        //    var request = new ForceRequest
-        //    {
-        //        direction = Vector3.zero,
-        //        speed = 0,
-        //        force = 0
-        //    };
-        //
-        //    player.RequestInstantForce(request);
-        //}
     }
 
     //MOVEMENT WITH ROTATION
@@ -97,16 +73,35 @@ public class PlayerController : MonoBehaviour
         rawMoveInput = obj.ReadValue<Vector2>();
     }
 
-
     private void OnDash(InputAction.CallbackContext obj)
     {
-        var request = new ForceRequest();
+        RotatePlayerToCamera();
 
-        request.direction = new Vector3(playerDirection.x, 0, playerDirection.z);
-        request.speed = speed;
-        request.force = force;
+        var request = new ForceRequest
+        {
+            direction = new Vector3(playerDirection.x, 0, playerDirection.z),
+            speed = speed,
+            force = force
+        };
 
         player.RequestDash(request);
+    }
+
+    private void RotatePlayerToCamera()
+    {
+        Vector3 inputDir = new Vector3(rawMoveInput.x, 0, rawMoveInput.y);
+
+        Transform camTransform = Camera.main.transform;
+        Vector3 camForward = camTransform.forward;
+        Vector3 camRight = camTransform.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 moveDir = camForward * inputDir.z + camRight * inputDir.x;
+        playerDirection = moveDir.normalized;
     }
 
     //JUMP
