@@ -66,13 +66,15 @@ public class Player : MonoBehaviour
             SetPreDashVelocity();
             dashActivated = false;
             rigidBody.useGravity = true;
+            animator.SetBool("isDashing", false);
         }
 
         CheckGrounded();
+        CheckFalling();
 
         if (constantForceRequest != null)
         {
-            animator.SetBool("IsRunning", true);
+            animator.SetBool("isRunning", true);
 
             if (!IsOverVelocityLimit())
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
@@ -80,7 +82,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            animator.SetBool("IsRunning", false);
+            animator.SetBool("isRunning", false);
             //Debug.Log("not requesting movement");
             if (isOnGround)
             {
@@ -130,6 +132,8 @@ public class Player : MonoBehaviour
 
         constantForceRequest = null;
         dashRequest = null;
+
+        animator.SetBool("isDashing", true);
     }
 
     private void SetPreDashVelocity()
@@ -156,6 +160,8 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        animator.SetBool("isJumping", true);
+
         jumps++;
         ResetJumpVelocity();
 
@@ -191,6 +197,7 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
             {
                 isOnGround = true;
+                animator.SetBool("isOnGround", true);
 
                 lastGroundedTime = Time.time;
                 jumps = 0;
@@ -199,6 +206,7 @@ public class Player : MonoBehaviour
             else
             {
                 isOnGround = false;
+                animator.SetBool("isOnGround", false);
             }
 
             isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
@@ -206,4 +214,12 @@ public class Player : MonoBehaviour
 
     }
 
+    private void CheckFalling()
+    {
+        if (!isOnGround && rigidBody.linearVelocity.y < 0)
+        {
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isOnGround", true);
+        }
+    }
 }
