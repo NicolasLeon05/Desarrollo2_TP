@@ -81,23 +81,20 @@ public class Player : MonoBehaviour
 
         CheckGrounded();
 
+        //Horizontal movement
         if (constantForceRequest != null)
         {
-            if (!IsOverVelocityLimit())
-                if (isOnGround)
-                    rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
-                else
-                    rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
+            MoveHorizontally();
 
             constantForceRequest = null;
         }
         else
         {
-            if (isOnGround)
-                rigidBody.linearVelocity = rigidBody.linearVelocity * 0.1f;
+            StopMovement();
         }
 
-        if (isOnCoyoteTime && !canDash)
+        //Dash
+        if ((isOnCoyoteTime && !canDash))
         {
             canDash = true;
             dashRequest = null;
@@ -106,6 +103,7 @@ public class Player : MonoBehaviour
         if (dashRequest != null && canDash)
             Dash();
 
+        //Jump
         if (controller.HasBufferedJump())
         {
             if (isOnCoyoteTime)
@@ -118,12 +116,47 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
-        else if (hasFlyCheat)
+
+        //Fly
+        if (hasFlyCheat)
         {
-            ResetVelocityY();
+            Debug.Log("Fly request = " + flyRequest);
+            if (flyRequest != null)
+            {
+                rigidBody.AddForce(flyRequest.direction * flyRequest.speed, ForceMode.Force);
+                flyRequest = null;
+            }
+            else
+            {
+                ResetVelocityY();
+            }
         }
 
+
         UpdateAnimationStates();
+    }
+
+    private void MoveHorizontally()
+    {
+        if (!IsOverVelocityLimit())
+            if (isOnGround)
+                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
+            else
+                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
+    }
+
+    private void StopMovement()
+    {
+        if (isOnGround)
+            rigidBody.linearVelocity = rigidBody.linearVelocity * 0.1f;
+        else if (hasFlyCheat)
+        {
+            Vector3 velocity = rigidBody.linearVelocity;
+            velocity.x *= 0.1f;
+            velocity.z *= 0.1f;
+            rigidBody.linearVelocity = velocity;
+        }
+
     }
 
     private void Dash()
@@ -167,27 +200,19 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         float jumpForce = controller.GetJumpForce();
+        jumps++;
+        ResetVelocityY();
 
-        if (hasFlyCheat)
-        {
-            Fly(jumpForce);
-        }
-        else
-        {
-            jumps++;
-            ResetVelocityY();
+        rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-            rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-            controller.ConsumeBufferedJump();
-            lastJumpTime = Time.time;
-        }
+        controller.ConsumeBufferedJump();
+        lastJumpTime = Time.time;
 
     }
 
     private void Fly(float speed)
     {
-        rigidBody.AddForce(Vector3.up * speed, ForceMode.Impulse);
+        rigidBody.AddForce(Vector3.up * speed, ForceMode.Force);
     }
 
     private void ResetVelocityY()
@@ -211,6 +236,7 @@ public class Player : MonoBehaviour
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
             if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
             {
+                Debug.Log("Raycast Hit");
                 isOnGround = true;
                 lastGroundedTime = Time.time;
                 jumps = 0;
@@ -259,6 +285,7 @@ public class Player : MonoBehaviour
         rigidBody.useGravity = !hasFlyCheat;
 
         Debug.Log("Fly cheat = " + hasFlyCheat);
+        Debug.Log("Gravity = " + rigidBody.useGravity);
     }
 
     public void ApplySpeedCheat()

@@ -1,3 +1,5 @@
+using System;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,13 +9,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference jumpAction;
     [SerializeField] private InputActionReference dashAction;
+    [SerializeField] private InputActionReference flyUpAction;
+    [SerializeField] private InputActionReference flyDownAction;
 
     [SerializeField] private float speed;
     [SerializeField] private float force;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float flySpeed;
 
     Vector3 playerDirection = Vector3.zero;
     Vector2 rawMoveInput;
+
+    float flyUpInput = 0;
+    float flyDownInput = 0;
 
     private InputBuffer jumpBuffer;
     [SerializeField] private float jumpBufferTime = 0.2f;
@@ -42,11 +50,25 @@ public class PlayerController : MonoBehaviour
             dashAction.action.performed += OnDash;
             dashAction.action.canceled += OnDash;
         }
+
+        if (flyUpAction != null)
+        {
+            flyUpAction.action.performed += OnFlyUp;
+            flyUpAction.action.canceled += OnFlyUp;
+        }
+
+        if (flyDownAction != null)
+        {
+            flyDownAction.action.performed += OnFlyDown;
+            flyDownAction.action.canceled += OnFlyDown;
+        }
     }
+
 
     private void Update()
     {
         CheckMovement();
+        CheckFly();
     }
 
     private void CheckMovement()
@@ -64,6 +86,36 @@ public class PlayerController : MonoBehaviour
             };
 
             player.RequestConstantForce(request);
+        }
+    }
+
+    private void CheckFly()
+    {
+        if (!player.hasFlyCheat)
+            return;
+
+        if (Mathf.Abs(flyUpInput) > 0.01f)
+        {
+            var request = new ForceRequest
+            {
+                direction = Vector3.up,
+                speed = flySpeed,
+                force = force
+            };
+
+            player.RequestFlyForce(request);
+        }
+
+        if (Mathf.Abs(flyDownInput) > 0.01f)
+        {
+            var request = new ForceRequest
+            {
+                direction = Vector3.down,
+                speed = flySpeed,
+                force = force
+            };
+
+            player.RequestFlyForce(request);
         }
     }
 
@@ -107,7 +159,8 @@ public class PlayerController : MonoBehaviour
     //JUMP
     private void OnJump(InputAction.CallbackContext obj)
     {
-        jumpBuffer.Register();
+        if (!player.hasFlyCheat)
+            jumpBuffer.Register();
     }
 
     public bool HasBufferedJump()
@@ -123,5 +176,39 @@ public class PlayerController : MonoBehaviour
     public float GetJumpForce()
     {
         return jumpForce;
+    }
+
+    private void OnFlyUp(InputAction.CallbackContext context)
+    {
+        flyUpInput = context.ReadValue<float>();
+
+        // if (!player.hasFlyCheat)
+        //     return;
+        //
+        // var request = new ForceRequest
+        // {
+        //     direction = Vector3.up,
+        //     speed = flySpeed,
+        //     force = force
+        // };
+        //
+        // player.RequestFlyForce(request);
+    }
+
+    private void OnFlyDown(InputAction.CallbackContext context)
+    {
+        flyDownInput = context.ReadValue<float>();
+
+        // if (!player.hasFlyCheat)
+        //     return;
+        //
+        // var request = new ForceRequest
+        // {
+        //     direction = Vector3.down,
+        //     speed = flySpeed,
+        //     force = force
+        // };
+        //
+        // player.RequestFlyForce(request);
     }
 }
