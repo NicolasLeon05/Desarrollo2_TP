@@ -1,7 +1,7 @@
 using UnityEngine;
 
 //[RequireComponent(typeof(Rigidbody))]
-public class PlataformMovement : MonoBehaviour
+public class ObjectMovement : MonoBehaviour
 {
     enum MovementType
     {
@@ -10,15 +10,15 @@ public class PlataformMovement : MonoBehaviour
         HorizontalZ
     }
 
+    [SerializeField] private MovementType movementType;
     [SerializeField] private float totalMovement = 2f;
     [SerializeField] private float movementSpeed = 1f;
-    [SerializeField] private MovementType movementType;
 
     private Vector3 startPos;
     private Vector3 targetOffset;
     private bool goingForward = true;
 
-    private void Start()
+    private void Awake()
     {
         startPos = transform.position;
 
