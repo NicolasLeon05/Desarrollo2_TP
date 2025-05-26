@@ -2,13 +2,12 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
 
-    ForceRequest constantForceRequest;
-    ForceRequest dashRequest;
+    private ForceRequest constantForceRequest;
+    private ForceRequest dashRequest;
 
     private Rigidbody rigidBody;
 
@@ -28,22 +27,20 @@ public class Player : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.2f;
 
     //Dash
-    Vector3 previousVelocity;
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float dashDuration = 0.3f;
+    private Vector3 previousVelocity;
     private float dashStartTime = 0f;
     private bool dashActivated = false;
     private bool canDash = true;
 
-
     //Animations
-    Animator animator;
+    private Animator animator;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-        animator.SetBool("isOnGround", true);
     }
 
     public void RequestDash(ForceRequest forceRequest)
@@ -56,42 +53,32 @@ public class Player : MonoBehaviour
         constantForceRequest = forceRequest;
     }
 
-
     private void FixedUpdate()
     {
         if (IsDashing())
             return;
-        else if (dashActivated)
+
+        if (dashActivated)
         {
             SetPreDashVelocity();
             dashActivated = false;
             rigidBody.useGravity = true;
-            animator.SetBool("isDashing", false);
         }
 
         CheckGrounded();
-        CheckFalling();
 
         if (constantForceRequest != null)
         {
-            animator.SetBool("isRunning", true);
-
             if (!IsOverVelocityLimit())
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
             constantForceRequest = null;
         }
         else
         {
-            animator.SetBool("isRunning", false);
-            //Debug.Log("not requesting movement");
             if (isOnGround)
-            {
-                rigidBody.linearVelocity = rigidBody.linearVelocity * (0.1f);
-                //Debug.Log("aahhh");
-            }
+                rigidBody.linearVelocity = rigidBody.linearVelocity * 0.1f;
         }
 
-        //Dash
         if (isOnCoyoteTime && !canDash)
         {
             canDash = true;
@@ -101,8 +88,6 @@ public class Player : MonoBehaviour
         if (dashRequest != null && canDash)
             Dash();
 
-
-        //Jump
         if (controller.HasBufferedJump())
         {
             if (isOnCoyoteTime)
@@ -115,8 +100,9 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
-    }
 
+        UpdateAnimationStates(); // <<-- Aquí se actualizan todos los parámetros del Animator de forma ordenada
+    }
 
     private void Dash()
     {
@@ -132,8 +118,6 @@ public class Player : MonoBehaviour
 
         constantForceRequest = null;
         dashRequest = null;
-
-        animator.SetBool("isDashing", true);
     }
 
     private void SetPreDashVelocity()
@@ -160,8 +144,6 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        animator.SetBool("isJumping", true);
-
         jumps++;
         ResetJumpVelocity();
 
@@ -169,7 +151,6 @@ public class Player : MonoBehaviour
         rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
         controller.ConsumeBufferedJump();
-
         lastJumpTime = Time.time;
     }
 
@@ -182,11 +163,9 @@ public class Player : MonoBehaviour
 
     private void CheckGrounded()
     {
-        //Ignores raycast right after jump
         if (Time.time - lastJumpTime < groundIgnoreTime)
         {
             isOnGround = false;
-
         }
         else
         {
@@ -197,29 +176,28 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
             {
                 isOnGround = true;
-                animator.SetBool("isOnGround", true);
-
                 lastGroundedTime = Time.time;
                 jumps = 0;
-                Debug.Log("RAYCAST HIT");
             }
             else
             {
                 isOnGround = false;
-                animator.SetBool("isOnGround", false);
             }
 
             isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
         }
-
     }
 
-    private void CheckFalling()
+    private void UpdateAnimationStates()
     {
-        if (!isOnGround && rigidBody.linearVelocity.y < 0)
-        {
-            animator.SetBool("isJumping", false);
-            animator.SetBool("isOnGround", true);
-        }
+        bool isMoving = constantForceRequest != null;
+        bool isJumping = rigidBody.linearVelocity.y > 0.1f && !isOnGround;
+        bool isFalling = rigidBody.linearVelocity.y < -0.1f && !isOnGround;
+
+        animator.SetBool("isRunning", isMoving);
+        animator.SetBool("isOnGround", isOnGround);
+        animator.SetBool("isJumping", isJumping);
+        animator.SetBool("isFalling", isFalling);
+        animator.SetBool("isDashing", IsDashing());
     }
 }
