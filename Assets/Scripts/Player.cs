@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     private ForceRequest constantForceRequest;
     private ForceRequest dashRequest;
+    private ForceRequest flyRequest;
 
     private Rigidbody rigidBody;
 
@@ -37,8 +38,8 @@ public class Player : MonoBehaviour
     private bool canDash = true;
 
     //Cheats
-    bool hasFlyCheat = false;
-    bool hasSpeedCheat = false;
+    public bool hasFlyCheat = false;
+    public bool hasSpeedCheat = false;
 
     //Animations
     private Animator animator;
@@ -59,6 +60,11 @@ public class Player : MonoBehaviour
     public void RequestConstantForce(ForceRequest forceRequest)
     {
         constantForceRequest = forceRequest;
+    }
+
+    public void RequestFlyForce(ForceRequest forceRequest)
+    {
+        flyRequest = forceRequest;
     }
 
     private void FixedUpdate()
@@ -111,6 +117,10 @@ public class Player : MonoBehaviour
                 jumps = maxJumps - 1;
                 Jump();
             }
+        }
+        else if (hasFlyCheat)
+        {
+            ResetVelocityY();
         }
 
         UpdateAnimationStates();
@@ -165,7 +175,7 @@ public class Player : MonoBehaviour
         else
         {
             jumps++;
-            ResetJumpVelocity();
+            ResetVelocityY();
 
             rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
@@ -177,10 +187,10 @@ public class Player : MonoBehaviour
 
     private void Fly(float speed)
     {
-        rigidBody.AddForce(Vector3.up * speed, ForceMode.Force);
+        rigidBody.AddForce(Vector3.up * speed, ForceMode.Impulse);
     }
 
-    private void ResetJumpVelocity()
+    private void ResetVelocityY()
     {
         Vector3 velocity = rigidBody.linearVelocity;
         velocity.y = 0;
