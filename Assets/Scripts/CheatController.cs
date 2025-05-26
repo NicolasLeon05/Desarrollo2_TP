@@ -7,8 +7,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
     [SerializeField] private InputActionReference speedCheat;
     [SerializeField] private InputActionReference flyCheat;
     [SerializeField] private InputActionReference nextLevelCheat;
-    [SerializeField] private Player player;
 
+    [SerializeField] private Player player;
 
     private void OnEnable()
     {

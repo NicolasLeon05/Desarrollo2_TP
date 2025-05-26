@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float airVelocityMultiplier;
     private int jumps;
 
+    //Movement
+    [SerializeField] private float maxSpeed = 10f;
+
     //Ground detection
     private bool isOnCoyoteTime;
     private bool isOnGround;
@@ -30,7 +33,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.2f;
 
     //Dash
-    [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float dashDuration = 0.3f;
     private Vector3 previousVelocity;
     private float dashStartTime = 0f;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
     //Cheats
     public bool hasFlyCheat = false;
     public bool hasSpeedCheat = false;
+    [SerializeField] private float maxSpeedWithCheat = 50f;
 
     //Animations
     private Animator animator;
@@ -82,16 +85,7 @@ public class Player : MonoBehaviour
         CheckGrounded();
 
         //Horizontal movement
-        if (constantForceRequest != null)
-        {
-            MoveHorizontally();
-
-            constantForceRequest = null;
-        }
-        else
-        {
-            StopMovement();
-        }
+        ManageHorizontalMovement();
 
         //Dash
         if ((isOnCoyoteTime && !canDash))
@@ -119,21 +113,24 @@ public class Player : MonoBehaviour
 
         //Fly
         if (hasFlyCheat)
-        {
-            Debug.Log("Fly request = " + flyRequest);
-            if (flyRequest != null)
-            {
-                rigidBody.AddForce(flyRequest.direction * flyRequest.speed, ForceMode.Force);
-                flyRequest = null;
-            }
-            else
-            {
-                ResetVelocityY();
-            }
-        }
+            ManageFly();
 
 
         UpdateAnimationStates();
+    }
+
+    private void ManageHorizontalMovement()
+    {
+        if (constantForceRequest != null)
+        {
+            MoveHorizontally();
+
+            constantForceRequest = null;
+        }
+        else
+        {
+            StopMovement();
+        }
     }
 
     private void MoveHorizontally()
@@ -157,6 +154,19 @@ public class Player : MonoBehaviour
             rigidBody.linearVelocity = velocity;
         }
 
+    }
+
+    private void ManageFly()
+    {
+        if (flyRequest != null)
+        {
+            rigidBody.AddForce(flyRequest.direction * flyRequest.speed, ForceMode.Force);
+            flyRequest = null;
+        }
+        else
+        {
+            ResetVelocityY();
+        }
     }
 
     private void Dash()
@@ -194,7 +204,11 @@ public class Player : MonoBehaviour
     private bool IsOverVelocityLimit()
     {
         Vector3 horizontal = new Vector3(rigidBody.linearVelocity.x, 0, rigidBody.linearVelocity.z);
-        return horizontal.magnitude > maxSpeed;
+
+        if (!hasSpeedCheat)
+            return horizontal.magnitude > maxSpeed;
+        else
+            return horizontal.magnitude > maxSpeedWithCheat;
     }
 
     private void Jump()
@@ -208,11 +222,6 @@ public class Player : MonoBehaviour
         controller.ConsumeBufferedJump();
         lastJumpTime = Time.time;
 
-    }
-
-    private void Fly(float speed)
-    {
-        rigidBody.AddForce(Vector3.up * speed, ForceMode.Force);
     }
 
     private void ResetVelocityY()
@@ -245,9 +254,9 @@ public class Player : MonoBehaviour
             {
                 isOnGround = false;
             }
-
-            isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
         }
+
+        isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -283,14 +292,12 @@ public class Player : MonoBehaviour
     {
         hasFlyCheat = !hasFlyCheat;
         rigidBody.useGravity = !hasFlyCheat;
-
-        Debug.Log("Fly cheat = " + hasFlyCheat);
-        Debug.Log("Gravity = " + rigidBody.useGravity);
     }
 
     public void ApplySpeedCheat()
     {
         hasSpeedCheat = !hasSpeedCheat;
+        Debug.Log("Toggle speed cheat = " + hasSpeedCheat);
     }
 
 }

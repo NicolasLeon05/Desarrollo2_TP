@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 45699457}
   - component: {fileID: 45699456}
   m_Layer: 0
-  m_Name: UIController
+  m_Name: LocalSceneIController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2779,9 +2779,13 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   dashAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  flyUpAction: {fileID: 0}
+  flyDownAction: {fileID: 0}
   speed: 10
   force: 20
   jumpForce: 6
+  flySpeed: 0
+  speedCheatMultiplier: 0
   jumpBufferTime: 0.2
 --- !u!114 &805366008
 MonoBehaviour:
@@ -6293,9 +6297,13 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   dashAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  flyUpAction: {fileID: -8905707439725398912, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  flyDownAction: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   speed: 15
   force: 30
   jumpForce: 6
+  flySpeed: 20
+  speedCheatMultiplier: 0
   jumpBufferTime: 0.2
 --- !u!136 &2095508635
 CapsuleCollider:

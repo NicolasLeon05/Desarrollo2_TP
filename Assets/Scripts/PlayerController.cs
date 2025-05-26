@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float force;
     [SerializeField] private float jumpForce;
     [SerializeField] private float flySpeed;
+    [SerializeField] private float speedCheatMultiplier = 5f;
 
     Vector3 playerDirection = Vector3.zero;
     Vector2 rawMoveInput;
@@ -84,6 +85,12 @@ public class PlayerController : MonoBehaviour
                 speed = speed,
                 force = force
             };
+
+            if (player.hasSpeedCheat)
+            {
+                request.speed *= speedCheatMultiplier;
+                request.force *= speedCheatMultiplier;
+            }
 
             player.RequestConstantForce(request);
         }
@@ -181,34 +188,10 @@ public class PlayerController : MonoBehaviour
     private void OnFlyUp(InputAction.CallbackContext context)
     {
         flyUpInput = context.ReadValue<float>();
-
-        // if (!player.hasFlyCheat)
-        //     return;
-        //
-        // var request = new ForceRequest
-        // {
-        //     direction = Vector3.up,
-        //     speed = flySpeed,
-        //     force = force
-        // };
-        //
-        // player.RequestFlyForce(request);
     }
 
     private void OnFlyDown(InputAction.CallbackContext context)
     {
         flyDownInput = context.ReadValue<float>();
-
-        // if (!player.hasFlyCheat)
-        //     return;
-        //
-        // var request = new ForceRequest
-        // {
-        //     direction = Vector3.down,
-        //     speed = flySpeed,
-        //     force = force
-        // };
-        //
-        // player.RequestFlyForce(request);
     }
 }

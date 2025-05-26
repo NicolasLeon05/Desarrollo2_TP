@@ -505,10 +505,10 @@
                 {
                     "name": "",
                     "id": "fdad120d-6417-471e-ab18-a72e1adb4a69",
-                    "path": "<Joystick>/{Menu}",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick",
+                    "groups": ";Gamepad;Joystick",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
