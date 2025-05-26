@@ -28,7 +28,7 @@ public class PauseController : MonoBehaviour
         TogglePause();
     }
 
-    private void TogglePause()
+    public void TogglePause()
     {
         isPaused = !isPaused;
 
