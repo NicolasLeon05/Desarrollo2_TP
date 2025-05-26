@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 
     //Jump
     [SerializeField] private int maxJumps = 2;
+    [SerializeField] private float airVelocityMultiplier;
     private int jumps;
 
     //Ground detection
@@ -70,7 +71,11 @@ public class Player : MonoBehaviour
         if (constantForceRequest != null)
         {
             if (!IsOverVelocityLimit())
-                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
+                if(isOnGround)
+                    rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
+                else
+                    rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
+
             constantForceRequest = null;
         }
         else
@@ -185,6 +190,22 @@ public class Player : MonoBehaviour
             }
 
             isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlataform"))
+        {
+            transform.SetParent(collision.transform);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlataform"))
+        {
+            transform.SetParent(null);
         }
     }
 
