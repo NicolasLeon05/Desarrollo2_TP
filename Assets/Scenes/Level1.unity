@@ -933,7 +933,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 271800240}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -3852,7 +3852,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1343496017}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4061,7 +4061,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1419577648}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -5135,6 +5135,7 @@ GameObject:
   - component: {fileID: 1812127724}
   - component: {fileID: 1812127723}
   - component: {fileID: 1812127727}
+  - component: {fileID: 1812127728}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -5241,6 +5242,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4005def82e0ad3a4e93f5b271486d7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1812127728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812127722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a926b87ccc05c947af846a57a0c4303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 1812127722}
+  pauseAction: {fileID: 217108024045002586, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  isPaused: 0
 --- !u!1 &1828497309
 GameObject:
   m_ObjectHideFlags: 0
@@ -6226,6 +6242,7 @@ SceneRoots:
   - {fileID: 805366013}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 918029528}
   - {fileID: 1145716790}
   - {fileID: 759748286}
   - {fileID: 2005226038}
@@ -6236,7 +6253,6 @@ SceneRoots:
   - {fileID: 2000061388}
   - {fileID: 321010087}
   - {fileID: 125837673}
-  - {fileID: 918029528}
   - {fileID: 233905929}
   - {fileID: 205921999}
   - {fileID: 1761345720}
