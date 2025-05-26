@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
+    [SerializeField] Transform spawnPoint;
 
     private ForceRequest constantForceRequest;
     private ForceRequest dashRequest;
@@ -35,6 +36,10 @@ public class Player : MonoBehaviour
     private bool dashActivated = false;
     private bool canDash = true;
 
+    //Cheats
+    bool hasFlyCheat = false;
+    bool hasSpeedCheat = false;
+
     //Animations
     private Animator animator;
 
@@ -42,6 +47,8 @@ public class Player : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        if (spawnPoint)
+            rigidBody.position = spawnPoint.position;
     }
 
     public void RequestDash(ForceRequest forceRequest)
@@ -71,7 +78,7 @@ public class Player : MonoBehaviour
         if (constantForceRequest != null)
         {
             if (!IsOverVelocityLimit())
-                if(isOnGround)
+                if (isOnGround)
                     rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
                 else
                     rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
@@ -106,7 +113,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        UpdateAnimationStates(); // <<-- Aquí se actualizan todos los parámetros del Animator de forma ordenada
+        UpdateAnimationStates();
     }
 
     private void Dash()
@@ -149,14 +156,28 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        jumps++;
-        ResetJumpVelocity();
-
         float jumpForce = controller.GetJumpForce();
-        rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-        controller.ConsumeBufferedJump();
-        lastJumpTime = Time.time;
+        if (hasFlyCheat)
+        {
+            Fly(jumpForce);
+        }
+        else
+        {
+            jumps++;
+            ResetJumpVelocity();
+
+            rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            controller.ConsumeBufferedJump();
+            lastJumpTime = Time.time;
+        }
+
+    }
+
+    private void Fly(float speed)
+    {
+        rigidBody.AddForce(Vector3.up * speed, ForceMode.Force);
     }
 
     private void ResetJumpVelocity()
@@ -221,4 +242,18 @@ public class Player : MonoBehaviour
         animator.SetBool("isFalling", isFalling);
         animator.SetBool("isDashing", IsDashing());
     }
+
+    public void ApplyFlyCheat()
+    {
+        hasFlyCheat = !hasFlyCheat;
+        rigidBody.useGravity = !hasFlyCheat;
+
+        Debug.Log("Fly cheat = " + hasFlyCheat);
+    }
+
+    public void ApplySpeedCheat()
+    {
+        hasSpeedCheat = !hasSpeedCheat;
+    }
+
 }

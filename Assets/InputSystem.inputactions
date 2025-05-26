@@ -1047,7 +1047,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InfiniteJumps",
+                    "name": "Fly",
                     "type": "Button",
                     "id": "4e533524-f6da-4777-89e3-c86a97c9750b",
                     "expectedControlType": "",
@@ -1084,7 +1084,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "InfiniteJumps",
+                    "action": "Fly",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

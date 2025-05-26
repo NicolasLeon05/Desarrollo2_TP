@@ -877,7 +877,7 @@ Transform:
   m_GameObject: {fileID: 233905928}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.95, y: 0, z: -10.48}
+  m_LocalPosition: {x: 2.95, y: 27.42, z: 43.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1978,7 +1978,7 @@ MonoBehaviour:
   m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
+  m_CursorLockBehavior: 1
   m_ScrollDeltaPerTick: 6
 --- !u!114 &544464014
 MonoBehaviour:
@@ -2796,6 +2796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 805366007}
+  spawnPoint: {fileID: 0}
   maxJumps: 2
   airVelocityMultiplier: 0
   jumpRayDistance: 0.6
@@ -3132,13 +3133,13 @@ PrefabInstance:
       addedObject: {fileID: 2095508634}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2095508632}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2095508633}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2095508635}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2095508632}
   m_SourcePrefab: {fileID: 100100000, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
 --- !u!1 &941627426 stripped
 GameObject:
@@ -3172,7 +3173,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -5200,7 +5201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1812127723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6190,6 +6191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 2095508634}
+  spawnPoint: {fileID: 233905929}
   maxJumps: 2
   airVelocityMultiplier: 0.3
   jumpRayDistance: 0.15
