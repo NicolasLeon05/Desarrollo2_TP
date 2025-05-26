@@ -39,5 +39,4 @@ public class PauseController : MonoBehaviour
         else
             Time.timeScale = 1f;
     }
-
 }
