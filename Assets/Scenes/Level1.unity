@@ -877,7 +877,7 @@ Transform:
   m_GameObject: {fileID: 233905928}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.95, y: 27.42, z: 43.47}
+  m_LocalPosition: {x: 2.95, y: 0, z: -10.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2803,6 +2803,8 @@ MonoBehaviour:
   coyoteTime: 0.2
   maxSpeed: 10
   dashDuration: 0.25
+  hasFlyCheat: 0
+  hasSpeedCheat: 0
 --- !u!54 &805366009
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6246,6 +6248,8 @@ MonoBehaviour:
   coyoteTime: 0.2
   maxSpeed: 10
   dashDuration: 0.3
+  hasFlyCheat: 0
+  hasSpeedCheat: 0
 --- !u!54 &2095508633
 Rigidbody:
   m_ObjectHideFlags: 0
