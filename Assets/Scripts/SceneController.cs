@@ -7,6 +7,7 @@ public class SceneController : MonoBehaviour
     public enum Scene
     {
         MainMenu,
+        Credits,
         Level1,
         Level2
     }
@@ -23,19 +24,19 @@ public class SceneController : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void NextLevel()
+    public void LoadNext()
     {
         int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         if (nextIndex < SceneManager.sceneCountInBuildSettings)
             SceneManager.LoadSceneAsync(nextIndex);
         else
-            Debug.LogWarning("No hay más niveles.");
+            Debug.LogWarning("There aren't more scenes");
     }
 
-    public void Load(Scene scene)
+    public void LoadSceneByName(string sceneName)
     {
-        SceneManager.LoadScene(scene.ToString());
+        SceneManager.LoadScene(sceneName);
     }
 
     public void Exit()
