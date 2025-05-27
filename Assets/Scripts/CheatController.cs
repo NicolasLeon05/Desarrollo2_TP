@@ -10,6 +10,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     [SerializeField] private Player player;
 
+    private Transform nextGoal;
+
     private void OnEnable()
     {
         if (speedCheat != null)
@@ -33,7 +35,13 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     private void OnNextLevelCheat(InputAction.CallbackContext context)
     {
-        SceneController.Instance.LoadNext();
+        SetObjective();
+    }  
+
+    public void SetObjective()
+    {
+        nextGoal = GameObject.FindGameObjectWithTag("Goal").transform;
+        player.ApplyNextLevelCheat(nextGoal);
     }
 
 }

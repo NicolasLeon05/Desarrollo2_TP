@@ -1,27 +1,21 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
-    public enum Scene
-    {
-        MainMenu,
-        Credits,
-        Level1,
-        Level2
-    }
 
     private void Awake()
-    {   
+    {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void LoadNext()
@@ -31,17 +25,33 @@ public class SceneController : MonoBehaviour
         if (nextIndex < SceneManager.sceneCountInBuildSettings)
             SceneManager.LoadScene(nextIndex);
         else
-            Debug.LogWarning("There aren't more scenes");
+            SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadNextAdditive()
     {
+        StartCoroutine(LoadNextAdditiveRoutine());
+    }
+
+    private IEnumerator LoadNextAdditiveRoutine()
+    {
         int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         if (nextIndex < SceneManager.sceneCountInBuildSettings)
-            SceneManager.LoadSceneAsync(nextIndex, LoadSceneMode.Additive);
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextIndex, LoadSceneMode.Additive);
+            while (!asyncLoad.isDone)
+                yield return null;
+
+            // Establece la nueva escena como activa
+            Scene newScene = SceneManager.GetSceneByBuildIndex(nextIndex);
+            if (newScene.IsValid())
+                SceneManager.SetActiveScene(newScene);
+        }
         else
-            Debug.LogWarning("There aren't more scenes");
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     public void LoadSceneByName(string sceneName)
@@ -51,7 +61,18 @@ public class SceneController : MonoBehaviour
 
     public void LoadSceneByNameAdditive(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        StartCoroutine(LoadSceneAdditiveAndSetActive(sceneName));
+    }
+
+    private IEnumerator LoadSceneAdditiveAndSetActive(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        while (!asyncLoad.isDone)
+            yield return null;
+
+        Scene newScene = SceneManager.GetSceneByName(sceneName);
+        if (newScene.IsValid())
+            SceneManager.SetActiveScene(newScene);
     }
 
     public void Exit()

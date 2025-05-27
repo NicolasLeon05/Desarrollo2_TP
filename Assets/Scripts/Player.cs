@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         if (spawnPoint)
@@ -81,6 +82,8 @@ public class Player : MonoBehaviour
             dashActivated = false;
             rigidBody.useGravity = true;
         }
+
+        UpdateAnimationStates();
 
         CheckGrounded();
 
@@ -115,8 +118,6 @@ public class Player : MonoBehaviour
         if (hasFlyCheat)
             ManageFly();
 
-
-        UpdateAnimationStates();
     }
 
     private void ManageHorizontalMovement()
@@ -259,22 +260,6 @@ public class Player : MonoBehaviour
         isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("MovingPlataform"))
-    //    {
-    //        transform.SetParent(collision.transform);
-    //    }
-    //}
-    //
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("MovingPlataform"))
-    //    {
-    //        transform.SetParent(null);
-    //    }
-    //}
-
     private void UpdateAnimationStates()
     {
         bool isMoving = constantForceRequest != null;
@@ -298,6 +283,11 @@ public class Player : MonoBehaviour
     {
         hasSpeedCheat = !hasSpeedCheat;
         Debug.Log("Toggle speed cheat = " + hasSpeedCheat);
+    }
+
+    public void ApplyNextLevelCheat(Transform goal)
+    {
+        transform.position = goal.position;
     }
 
 }

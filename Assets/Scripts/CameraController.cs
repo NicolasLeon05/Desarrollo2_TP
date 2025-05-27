@@ -28,7 +28,8 @@ public class CameraController : MonoBehaviour
 
     private void OnMoveCamera(InputAction.CallbackContext context)
     {
-        lookInput = context.ReadValue<Vector2>();
+        if(Cursor.lockState == CursorLockMode.Locked)
+            lookInput = context.ReadValue<Vector2>();
     }
 
     private void LateUpdate()

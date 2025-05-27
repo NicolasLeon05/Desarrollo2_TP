@@ -20,7 +20,7 @@ public class PauseController : MonoBehaviour
     private void Awake()
     {
         pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnPause(InputAction.CallbackContext context)
@@ -33,6 +33,10 @@ public class PauseController : MonoBehaviour
         isPaused = !isPaused;
 
         pauseMenu.SetActive(isPaused);
+        if (isPaused)
+            Cursor.lockState = CursorLockMode.None;
+        else
+            Cursor.lockState = CursorLockMode.Locked;
 
         if (isPaused)
             Time.timeScale = 0f;
