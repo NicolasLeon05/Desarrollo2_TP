@@ -2737,7 +2737,6 @@ GameObject:
   - component: {fileID: 759748285}
   - component: {fileID: 759748284}
   - component: {fileID: 759748283}
-  - component: {fileID: 759748287}
   m_Layer: 0
   m_Name: Plataform
   m_TagString: MovingPlataform
@@ -2834,20 +2833,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &759748287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759748282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 553e3e8d5bed5e245b0c02623002867b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  axis: 1
-  rotationSpeed: 90
 --- !u!1 &805366006
 GameObject:
   m_ObjectHideFlags: 0

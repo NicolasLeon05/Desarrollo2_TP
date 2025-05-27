@@ -33,7 +33,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     private void OnNextLevelCheat(InputAction.CallbackContext context)
     {
-        throw new NotImplementedException();
+        SceneController.Instance.LoadNext();
     }
 
 }
