@@ -13,7 +13,7 @@ public class SceneController : MonoBehaviour
     }
 
     private void Awake()
-    {
+    {   
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -29,7 +29,17 @@ public class SceneController : MonoBehaviour
         int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         if (nextIndex < SceneManager.sceneCountInBuildSettings)
-            SceneManager.LoadSceneAsync(nextIndex);
+            SceneManager.LoadScene(nextIndex);
+        else
+            Debug.LogWarning("There aren't more scenes");
+    }
+
+    public void LoadNextAdditive()
+    {
+        int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+        if (nextIndex < SceneManager.sceneCountInBuildSettings)
+            SceneManager.LoadSceneAsync(nextIndex, LoadSceneMode.Additive);
         else
             Debug.LogWarning("There aren't more scenes");
     }
@@ -37,6 +47,11 @@ public class SceneController : MonoBehaviour
     public void LoadSceneByName(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadSceneByNameAdditive(string sceneName)
+    {
+        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
 
     public void Exit()

@@ -5,6 +5,8 @@ public class EndLevel : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-            SceneController.Instance.LoadNext();
+            SceneController.Instance.LoadNextAdditive();
+
+        gameObject.SetActive(false);
     }
 }

@@ -259,21 +259,21 @@ public class Player : MonoBehaviour
         isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("MovingPlataform"))
-        {
-            transform.SetParent(collision.transform);
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("MovingPlataform"))
-        {
-            transform.SetParent(null);
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("MovingPlataform"))
+    //    {
+    //        transform.SetParent(collision.transform);
+    //    }
+    //}
+    //
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("MovingPlataform"))
+    //    {
+    //        transform.SetParent(null);
+    //    }
+    //}
 
     private void UpdateAnimationStates()
     {
