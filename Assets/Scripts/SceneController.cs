@@ -43,7 +43,6 @@ public class SceneController : MonoBehaviour
             while (!asyncLoad.isDone)
                 yield return null;
 
-            // Establece la nueva escena como activa
             Scene newScene = SceneManager.GetSceneByBuildIndex(nextIndex);
             if (newScene.IsValid())
                 SceneManager.SetActiveScene(newScene);

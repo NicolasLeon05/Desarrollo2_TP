@@ -1,6 +1,5 @@
 using UnityEngine;
 
-//[RequireComponent(typeof(Rigidbody))]
 public class ObjectMovement : MonoBehaviour
 {
     enum MovementType
