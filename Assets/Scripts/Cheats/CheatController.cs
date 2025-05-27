@@ -40,7 +40,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public void SetObjective()
     {
         nextGoal = GameObject.FindGameObjectWithTag("Goal").transform;
-        player.ApplyNextLevelCheat(nextGoal);
+        player.ApplyTeleportCheat(nextGoal);
     }
 
 }

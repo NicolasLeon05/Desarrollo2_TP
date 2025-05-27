@@ -46,11 +46,23 @@ public class Player : MonoBehaviour
     //Animations
     private Animator animator;
 
+
+    private static Player instance;
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            instance.ApplyTeleportCheat(spawnPoint);
+            return;
+        }
+
+        instance = this;
         DontDestroyOnLoad(gameObject);
+
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
         if (spawnPoint)
             rigidBody.position = spawnPoint.position;
     }
@@ -284,7 +296,7 @@ public class Player : MonoBehaviour
         Debug.Log("Toggle speed cheat = " + hasSpeedCheat);
     }
 
-    public void ApplyNextLevelCheat(Transform goal)
+    public void ApplyTeleportCheat(Transform goal)
     {
         transform.position = goal.position;
     }

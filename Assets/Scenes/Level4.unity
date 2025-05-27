@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553e3e8d5bed5e245b0c02623002867b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: 2
+  axis: 1
   rotationSpeed: 90
 --- !u!64 &216403216
 MeshCollider:
@@ -923,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553e3e8d5bed5e245b0c02623002867b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: 2
+  axis: 1
   rotationSpeed: 90
 --- !u!64 &979149439
 MeshCollider:
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553e3e8d5bed5e245b0c02623002867b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: 2
+  axis: 1
   rotationSpeed: 90
 --- !u!64 &1351960266
 MeshCollider:
@@ -1370,7 +1370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553e3e8d5bed5e245b0c02623002867b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: 2
+  axis: 1
   rotationSpeed: 90
 --- !u!64 &1984705686
 MeshCollider:
