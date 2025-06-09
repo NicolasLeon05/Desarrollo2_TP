@@ -161,22 +161,29 @@ public class Player : MonoBehaviour
 
         if (IsOverVelocityLimit())
         {
+            float yVelocity = rigidBody.linearVelocity.y;
+
             Vector3 velocity = rigidBody.linearVelocity;
             velocity.y = 0;
             velocity.Normalize();
             velocity *= maxSpeed;
+            velocity.y = yVelocity;
             rigidBody.linearVelocity = velocity;
         }
     }
 
     private void ManageMovementAngleChange()
     {
-        Vector3 newDirection = constantForceRequest.direction.normalized;
-        Vector3 currentDirection = rigidBody.linearVelocity.normalized;
+        Vector3 newDirection = constantForceRequest.direction;
+        newDirection.y = 0;
+        newDirection.Normalize();
 
+        Vector3 currentDirection = rigidBody.linearVelocity;
+        currentDirection.y = 0;
+        currentDirection.Normalize();
         float angleChange = Vector3.Angle(newDirection, currentDirection);
 
-        //Debug.Log("Angle change: " + angleChange);
+        Debug.Log("Angle change: " + angleChange);
 
         if (angleChange > turnAngleLimitDown && angleChange < turnAngleLimitUp)
             AdjustVelocityToAngle(newDirection);
@@ -290,7 +297,7 @@ public class Player : MonoBehaviour
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
             if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
             {
-                Debug.Log("Raycast Hit");
+                //Debug.Log("Raycast Hit");
                 isOnGround = true;
                 lastGroundedTime = Time.time;
                 jumps = 0;
