@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float turnAngleLimitDown;
     [SerializeField] private float turnAngleLimitUp;
+    [SerializeField] private float brake;
 
     [Header("Ground detection")]
     private bool isOnCoyoteTime;
@@ -101,7 +102,6 @@ public class Player : MonoBehaviour
 
         CheckGrounded();
 
-        //Horizontal movement
         ManageHorizontalMovement();
 
         //Dash
@@ -114,7 +114,15 @@ public class Player : MonoBehaviour
         if (dashRequest != null && canDash)
             Dash();
 
-        //Jump
+        ManageJump();
+
+        if (hasFlyCheat)
+            ManageFly();
+
+    }
+
+    private void ManageJump()
+    {
         if (controller.HasBufferedJump())
         {
             if (isOnCoyoteTime)
@@ -127,11 +135,6 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
-
-        //Fly
-        if (hasFlyCheat)
-            ManageFly();
-
     }
 
     private void ManageHorizontalMovement()
@@ -169,7 +172,7 @@ public class Player : MonoBehaviour
             velocity.y = yVelocity;
             rigidBody.linearVelocity = velocity;
         }
-        animator.SetFloat("Speed",rigidBody.linearVelocity.magnitude);
+        animator.SetFloat("Speed", rigidBody.linearVelocity.magnitude);
     }
 
     private void ManageMovementAngleChange()
@@ -191,8 +194,11 @@ public class Player : MonoBehaviour
 
     private void AdjustVelocityToAngle(Vector3 newDirection)
     {
-        newDirection *= rigidBody.linearVelocity.magnitude;
-        rigidBody.linearVelocity = newDirection;
+        Vector3 brakeForce = rigidBody.linearVelocity * -1;
+        brakeForce.Normalize();
+        brakeForce *= brake;
+
+        rigidBody.AddForce(brakeForce, ForceMode.Force);
     }
 
     private void StopMovement()
@@ -317,11 +323,9 @@ public class Player : MonoBehaviour
     {
         bool isMoving = constantForceRequest != null;
         bool isJumping = rigidBody.linearVelocity.y > 0.1f && !isOnGround;
-        bool isFalling = rigidBody.linearVelocity.y < -0.1f && !isOnGround;
 
         animator.SetBool("isOnGround", isOnGround);
         animator.SetBool("isJumping", isJumping);
-        animator.SetBool("isFalling", isFalling);
         animator.SetBool("isDashing", IsDashing());
     }
 

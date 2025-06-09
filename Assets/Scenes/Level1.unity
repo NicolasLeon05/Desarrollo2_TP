@@ -7594,7 +7594,8 @@ MonoBehaviour:
   airVelocityMultiplier: 0.3
   maxSpeed: 10
   turnAngleLimitDown: 0.3
-  turnAngleLimitUp: 90
+  turnAngleLimitUp: 40
+  brake: 5
   jumpRayDistance: 0.15
   coyoteTime: 0.2
   dashDuration: 0.3
