@@ -14,17 +14,17 @@ public class Player : MonoBehaviour
 
     private Rigidbody rigidBody;
 
-    //Jump
+    [Header("Jump")]
     [SerializeField] private int maxJumps = 2;
     [SerializeField] private float airVelocityMultiplier;
     private int jumps;
 
-    //Movement
+    [Header("Movement")]
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float turnAngleLimitDown;
     [SerializeField] private float turnAngleLimitUp;
 
-    //Ground detection
+    [Header("Ground detection")]
     private bool isOnCoyoteTime;
     private bool isOnGround;
     private float groundIgnoreTime = 0.3f;
@@ -35,23 +35,22 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpRayDistance = 0.15f;
     [SerializeField] private float coyoteTime = 0.2f;
 
-    //Dash
+    [Header("Dash")]
     [SerializeField] private float dashDuration = 0.3f;
     private Vector3 previousVelocity;
     private float dashStartTime = 0f;
     private bool dashActivated = false;
     private bool canDash = true;
 
-    //Cheats
+    [Header("Cheats")]
     public bool hasFlyCheat = false;
     public bool hasSpeedCheat = false;
     [SerializeField] private float maxSpeedWithCheat = 50f;
 
-    //Animations
     private Animator animator;
 
-
     private static Player instance;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -170,6 +169,7 @@ public class Player : MonoBehaviour
             velocity.y = yVelocity;
             rigidBody.linearVelocity = velocity;
         }
+        animator.SetFloat("Speed",rigidBody.linearVelocity.magnitude);
     }
 
     private void ManageMovementAngleChange()
@@ -206,6 +206,8 @@ public class Player : MonoBehaviour
             velocity.z *= 0.1f;
             rigidBody.linearVelocity = velocity;
         }
+
+        animator.SetFloat("Speed", rigidBody.linearVelocity.magnitude);
     }
 
     private void ManageFly()
@@ -317,7 +319,6 @@ public class Player : MonoBehaviour
         bool isJumping = rigidBody.linearVelocity.y > 0.1f && !isOnGround;
         bool isFalling = rigidBody.linearVelocity.y < -0.1f && !isOnGround;
 
-        animator.SetBool("isRunning", isMoving);
         animator.SetBool("isOnGround", isOnGround);
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isFalling", isFalling);
