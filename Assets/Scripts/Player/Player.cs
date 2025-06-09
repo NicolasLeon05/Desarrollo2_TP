@@ -147,11 +147,19 @@ public class Player : MonoBehaviour
 
     private void MoveHorizontally()
     {
-        if (!IsOverVelocityLimit())
             if (isOnGround)
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
             else
                 rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
+        
+        if (IsOverVelocityLimit())
+        {
+            Vector3 velocity = rigidBody.linearVelocity;
+            velocity.y = 0;
+            velocity.Normalize();
+            velocity *= maxSpeed;
+            rigidBody.linearVelocity = velocity;
+        }
     }
 
     private void StopMovement()
