@@ -136,6 +136,7 @@ public class Player : MonoBehaviour
         if (constantForceRequest != null)
         {
             MoveHorizontally();
+
             constantForceRequest = null;
         }
         else
@@ -146,25 +147,25 @@ public class Player : MonoBehaviour
 
     private void MoveHorizontally()
     {
-        //if (isOnGround)
-            rigidBody.AddForce(constantForceRequest.direction * 1.2f, ForceMode.Impulse);
-        //else
-        //    rigidBody.AddForce(constantForceRequest.direction * 3 * airVelocityMultiplier, ForceMode.Force);
-
-        CheckOverVelocityLimit();
+        if (!IsOverVelocityLimit())
+            if (isOnGround)
+                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
+            else
+                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
     }
 
     private void StopMovement()
     {
-        //if (isOnGround)
-        //    rigidBody.linearVelocity = rigidBody.linearVelocity * 0.1f;
-        //else if (hasFlyCheat)
-        //{
+        if (isOnGround)
+            rigidBody.linearVelocity = rigidBody.linearVelocity * 0.1f;
+        else if (hasFlyCheat)
+        {
             Vector3 velocity = rigidBody.linearVelocity;
             velocity.x *= 0.1f;
             velocity.z *= 0.1f;
             rigidBody.linearVelocity = velocity;
-        //}
+        }
+
     }
 
     private void ManageFly()
@@ -212,19 +213,14 @@ public class Player : MonoBehaviour
         return Time.time - dashStartTime < dashDuration;
     }
 
-    private void CheckOverVelocityLimit()
+    private bool IsOverVelocityLimit()
     {
         Vector3 horizontal = new Vector3(rigidBody.linearVelocity.x, 0, rigidBody.linearVelocity.z);
 
-        Vector3 maxedVelocity = horizontal.normalized;
-
         if (!hasSpeedCheat)
-            maxedVelocity *= maxSpeed;
+            return horizontal.magnitude > maxSpeed;
         else
-            maxedVelocity *= maxSpeedWithCheat;
-
-        maxedVelocity.y = rigidBody.linearVelocity.y;
-        rigidBody.linearVelocity = maxedVelocity;
+            return horizontal.magnitude > maxSpeedWithCheat;
     }
 
     private void Jump()
