@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
@@ -19,6 +21,8 @@ public class Player : MonoBehaviour
 
     //Movement
     [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float turnAngleLimitDown;
+    [SerializeField] private float turnAngleLimitUp;
 
     //Ground detection
     private bool isOnCoyoteTime;
@@ -147,11 +151,14 @@ public class Player : MonoBehaviour
 
     private void MoveHorizontally()
     {
-            if (isOnGround)
-                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
-            else
-                rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
-        
+        if (isOnGround)
+        {
+            rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed, ForceMode.Force);
+            ManageMovementAngleChange();
+        }
+        else
+            rigidBody.AddForce(constantForceRequest.direction * constantForceRequest.speed * airVelocityMultiplier, ForceMode.Force);
+
         if (IsOverVelocityLimit())
         {
             Vector3 velocity = rigidBody.linearVelocity;
@@ -162,10 +169,29 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void ManageMovementAngleChange()
+    {
+        Vector3 newDirection = constantForceRequest.direction.normalized;
+        Vector3 currentDirection = rigidBody.linearVelocity.normalized;
+
+        float angleChange = Vector3.Angle(newDirection, currentDirection);
+
+        //Debug.Log("Angle change: " + angleChange);
+
+        if (angleChange > turnAngleLimitDown && angleChange < turnAngleLimitUp)
+            AdjustVelocityToAngle(newDirection);
+    }
+
+    private void AdjustVelocityToAngle(Vector3 newDirection)
+    {
+        newDirection *= rigidBody.linearVelocity.magnitude;
+        rigidBody.linearVelocity = newDirection;
+    }
+
     private void StopMovement()
     {
         if (isOnGround)
-            rigidBody.linearVelocity = rigidBody.linearVelocity * 0.1f;
+            rigidBody.linearVelocity *= 0.1f;
         else if (hasFlyCheat)
         {
             Vector3 velocity = rigidBody.linearVelocity;
@@ -173,7 +199,6 @@ public class Player : MonoBehaviour
             velocity.z *= 0.1f;
             rigidBody.linearVelocity = velocity;
         }
-
     }
 
     private void ManageFly()

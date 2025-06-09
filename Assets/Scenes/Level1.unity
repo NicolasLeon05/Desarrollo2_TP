@@ -3064,6 +3064,8 @@ MonoBehaviour:
   maxJumps: 2
   airVelocityMultiplier: 0
   maxSpeed: 10
+  turnAngleLimitDown: 0
+  turnAngleLimitUp: 0
   jumpRayDistance: 0.6
   coyoteTime: 0.2
   dashDuration: 0.25
@@ -3537,6 +3539,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 845064838}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1430710846}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
       insertIndex: -1
@@ -5578,6 +5583,59 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 337431681}
   m_SourcePrefab: {fileID: 100100000, guid: 1399be292710bee48bc4a44bc5b02bad, type: 3}
+--- !u!1 &1430710845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1430710846}
+  - component: {fileID: 1430710847}
+  m_Layer: 0
+  m_Name: FootCollision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1430710846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430710845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.083, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2095508631}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1430710847
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430710845}
+  m_Material: {fileID: 13400000, guid: 2738ce73b9494d84a9eabfffdc32209a, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.09
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1458758079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1399be292710bee48bc4a44bc5b02bad, type: 3}
@@ -7747,6 +7805,8 @@ MonoBehaviour:
   maxJumps: 2
   airVelocityMultiplier: 0.3
   maxSpeed: 10
+  turnAngleLimitDown: 0.3
+  turnAngleLimitUp: 90
   jumpRayDistance: 0.15
   coyoteTime: 0.2
   dashDuration: 0.3
@@ -7811,7 +7871,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095508629}
-  m_Material: {fileID: 13400000, guid: 2738ce73b9494d84a9eabfffdc32209a, type: 2}
+  m_Material: {fileID: 13400000, guid: b73394156f493f64eb99c96c142502e5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
