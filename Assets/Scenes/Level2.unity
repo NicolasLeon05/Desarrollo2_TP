@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 511091261}
   - component: {fileID: 511091260}
   m_Layer: 0
-  m_Name: Plataform (6)
+  m_Name: Platform (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 625291371}
   - component: {fileID: 625291370}
   m_Layer: 0
-  m_Name: Plataform (5)
+  m_Name: Platform (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -490,7 +490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 973086998}
   m_Layer: 0
-  m_Name: Plataforms
+  m_Name: Platforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 1066194872}
   - component: {fileID: 1066194871}
   m_Layer: 0
-  m_Name: Plataform (10)
+  m_Name: Platform (10)
   m_TagString: MovingPlataform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 1144748601}
   - component: {fileID: 1144748600}
   m_Layer: 0
-  m_Name: Plataform (2)
+  m_Name: Platform (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -752,7 +752,7 @@ GameObject:
   - component: {fileID: 1215415468}
   - component: {fileID: 1215415467}
   m_Layer: 0
-  m_Name: Plataform (1)
+  m_Name: Platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -860,7 +860,7 @@ GameObject:
   - component: {fileID: 1270342462}
   - component: {fileID: 1270342461}
   m_Layer: 0
-  m_Name: Plataform (7)
+  m_Name: Platform (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -968,7 +968,7 @@ GameObject:
   - component: {fileID: 1361031619}
   - component: {fileID: 1361031618}
   m_Layer: 0
-  m_Name: Plataform (4)
+  m_Name: Platform (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1077,7 +1077,7 @@ GameObject:
   - component: {fileID: 1753967643}
   - component: {fileID: 1753967642}
   m_Layer: 0
-  m_Name: Plataform (9)
+  m_Name: Platform (9)
   m_TagString: MovingPlataform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1200,7 +1200,7 @@ GameObject:
   - component: {fileID: 1798190640}
   - component: {fileID: 1798190639}
   m_Layer: 0
-  m_Name: Plataform
+  m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1308,7 +1308,7 @@ GameObject:
   - component: {fileID: 1870094995}
   - component: {fileID: 1870094994}
   m_Layer: 0
-  m_Name: Plataform (3)
+  m_Name: Platform (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1416,7 +1416,7 @@ GameObject:
   - component: {fileID: 1965649919}
   - component: {fileID: 1965649918}
   m_Layer: 0
-  m_Name: Plataform (8)
+  m_Name: Platform (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
