@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
         if (!player.hasFlyCheat)
             return;
 
-        if (Mathf.Abs(flyUpInput) > 0.01f)
+        if (flyUpInput > 0.01f)
         {
             var request = new ForceRequest
             {
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
             player.RequestFlyForce(request);
         }
 
-        if (Mathf.Abs(flyDownInput) > 0.01f)
+        if (flyDownInput > 0.01f)
         {
             var request = new ForceRequest
             {

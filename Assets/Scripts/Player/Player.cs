@@ -42,10 +42,15 @@ public class Player : MonoBehaviour
     private bool dashActivated = false;
     private bool canDash = true;
 
+    [Header("Brake")]
+    private float brakeForce = 10f;
+
+
     [Header("Cheats")]
     public bool hasFlyCheat = false;
     public bool hasSpeedCheat = false;
     [SerializeField] private float maxSpeedWithCheat = 50f;
+
 
     private Animator animator;
 
@@ -146,7 +151,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            StopMovement();
+            ApplyBrake();
         }
     }
 
@@ -203,10 +208,11 @@ public class Player : MonoBehaviour
         //rigidBody.AddForce(newDirection, ForceMode.Force);
     }
 
-    private void StopMovement()
+    private void ApplyBrake()
     {
         if (isOnGround)
-            rigidBody.linearVelocity *= 0.1f;
+            //rigidBody.linearVelocity *= 0.1f;
+            rigidBody.AddForce(rigidBody.linearVelocity * -1 * brakeForce, ForceMode.Force);
         else if (hasFlyCheat)
         {
             Vector3 velocity = rigidBody.linearVelocity;
@@ -215,7 +221,6 @@ public class Player : MonoBehaviour
             rigidBody.linearVelocity = velocity;
         }
 
-        animator.SetFloat("Speed", rigidBody.linearVelocity.magnitude);
     }
 
     private void ManageFly()
@@ -326,6 +331,10 @@ public class Player : MonoBehaviour
         bool isJumping = rigidBody.linearVelocity.y > 0.1f && !isOnGround;
         bool isFalling = rigidBody.linearVelocity.y < -0.1f && !isOnGround;
 
+        Vector3 aux = rigidBody.linearVelocity;
+        aux.y = 0;
+
+        animator.SetFloat("Speed", aux.magnitude);
         animator.SetBool("isOnGround", isOnGround);
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isFalling", isFalling);
