@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMovement()
     {
-        //There is an input
         if (rawMoveInput.magnitude > 0.01f)
         {
             RotatePlayerToCamera();

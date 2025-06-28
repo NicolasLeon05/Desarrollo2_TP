@@ -5291,9 +5291,9 @@ Transform:
   m_GameObject: {fileID: 1423999418}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 62}
-  m_LocalScale: {x: 250, y: 250, z: 250}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: -2, y: 82, z: 63.8}
+  m_LocalScale: {x: 62.185303, y: 212.63434, z: 198.18018}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 417497739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5312,9 +5312,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -5325,7 +5325,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423999418}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -7594,8 +7594,7 @@ MonoBehaviour:
   airVelocityMultiplier: 0.3
   maxSpeed: 10
   turnAngleLimitDown: 0.3
-  turnAngleLimitUp: 40
-  brake: 5
+  turnAngleLimitUp: 90
   jumpRayDistance: 0.15
   coyoteTime: 0.2
   dashDuration: 0.3
