@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
 
         if (dashActivated)
         {
-            SetPreDashVelocity();
+            RestorePreDashVelocity();
             dashActivated = false;
             rigidBody.useGravity = true;
         }
@@ -247,7 +247,7 @@ public class Player : MonoBehaviour
         dashRequest = null;
     }
 
-    private void SetPreDashVelocity()
+    private void RestorePreDashVelocity()
     {
         if (previousVelocity.magnitude < 0.1f)
             return;

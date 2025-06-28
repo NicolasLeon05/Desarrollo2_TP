@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
         var request = new ForceRequest
         {
-            direction = new Vector3(playerDirection.x, 0, playerDirection.z),
+            direction = player.transform.forward,
             speed = speed,
             force = force
         };
