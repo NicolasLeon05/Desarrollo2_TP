@@ -1,14 +1,12 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class Test : MonoBehaviour
+public class NavigationController : MonoBehaviour //SelectionKeeper
 {
 
     private EventSystem eventSystem;
-    private GameObject lastSelectedGameObject;
+    private GameObject lastSelectedOption;
 
     [SerializeField] private InputActionReference navigateAction;
     private Vector2 navigateInput = Vector2.zero;
@@ -17,6 +15,7 @@ public class Test : MonoBehaviour
     private void Awake()
     {
         eventSystem = GetComponent<EventSystem>();
+        lastSelectedOption = eventSystem.firstSelectedGameObject;
     }
 
 
@@ -35,13 +34,16 @@ public class Test : MonoBehaviour
         {
             //Debug.Log(eventSystem.currentSelectedGameObject);
 
-            Debug.Log(navigateInput);
+            Debug.Log(lastSelectedOption);
 
 
             if (eventSystem.currentSelectedGameObject == null)
+            {
                 if (WasNavigatePressed())
-                    eventSystem.SetSelectedGameObject(lastSelectedGameObject);
-           
+                    eventSystem.SetSelectedGameObject(lastSelectedOption);
+            }
+            else
+                lastSelectedOption = eventSystem.currentSelectedGameObject;
 
         }
         else
