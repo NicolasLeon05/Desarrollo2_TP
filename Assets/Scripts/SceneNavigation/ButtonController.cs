@@ -37,5 +37,7 @@ public class ButtonController : MonoBehaviour
                 SceneManager.UnloadSceneAsync(scene);
             }
         }
+
+        GameManager.Instance.SetState(GameManager.GameState.Menus);
     }
 }
