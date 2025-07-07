@@ -37,7 +37,7 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
 
     private void OnEnable()
     {
-        if (navigateAction != null && GameManager.Instance.CurrentState != GameManager.GameState.Gameplay)
+        if (navigateAction != null)
         {
             navigateAction.action.performed += OnNavigate;
             navigateAction.action.canceled += OnNavigate;
@@ -47,6 +47,7 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
     void Update()
     {
         //Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
+        Debug.Log(GameManager.Instance.CurrentState);
 
         if (eventSystem != null)
         {
@@ -56,7 +57,14 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
             if (eventSystem.currentSelectedGameObject == null)
             {
                 if (WasNavigatePressed())
+                {
+                    Debug.Log("Navigate action pressed");
                     eventSystem.SetSelectedGameObject(lastSelectedOption);
+                }
+                else
+                {
+                    Debug.Log("Navigate action NOT pressed");
+                }
             }
             else
                 lastSelectedOption = eventSystem.currentSelectedGameObject;
