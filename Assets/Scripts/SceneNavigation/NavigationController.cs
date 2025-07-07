@@ -46,7 +46,7 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
 
     void Update()
     {
-        Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
+        //Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
 
         if (eventSystem != null)
         {

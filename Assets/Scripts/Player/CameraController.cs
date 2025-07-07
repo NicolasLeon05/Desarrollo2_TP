@@ -51,7 +51,7 @@ public class CameraController : MonoBehaviour
             {
                 pivot = foundPivot;
             }
-       
+
             else
             {
                 Debug.LogWarning("Pivot not found");
@@ -70,6 +70,12 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (GameManager.Instance.CurrentState == GameManager.GameState.Paused)
+        {
+            lookInput = Vector2.zero;
+            return;
+        }
+
         if (target == null || pivot == null)
             return;
 
