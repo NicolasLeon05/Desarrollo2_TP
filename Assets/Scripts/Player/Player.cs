@@ -54,18 +54,18 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
-    private static Player instance;
+    public static Player Instance { get; private set; }
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
-            instance.ApplyTeleportCheat(spawnPoint);
+            Instance.ApplyTeleportCheat(spawnPoint);
             return;
         }
 
-        instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
 
         rigidBody = GetComponent<Rigidbody>();
@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
         currentDirection.Normalize();
         float angleChange = Vector3.Angle(newDirection, currentDirection);
 
-        Debug.Log("Angle change: " + angleChange);
+        //Debug.Log("Angle change: " + angleChange);
 
         if (angleChange > turnAngleLimitDown && angleChange < turnAngleLimitUp)
             AdjustVelocityToAngle(newDirection);
@@ -198,20 +198,13 @@ public class Player : MonoBehaviour
 
     private void AdjustVelocityToAngle(Vector3 newDirection)
     {
-        //Vector3 brakeForce = rigidBody.linearVelocity * -1;
-        //brakeForce.y = 0;
-        //brakeForce.Normalize();
-        //rigidBody.AddForce(brakeForce * 5, ForceMode.Force);
-
         newDirection *= rigidBody.linearVelocity.magnitude;
         rigidBody.linearVelocity = newDirection;
-        //rigidBody.AddForce(newDirection, ForceMode.Force);
     }
 
     private void ApplyBrake()
     {
         if (isOnGround)
-            //rigidBody.linearVelocity *= 0.1f;
             rigidBody.AddForce(rigidBody.linearVelocity * -1 * brakeForce, ForceMode.Force);
         else if (hasFlyCheat)
         {
@@ -345,6 +338,7 @@ public class Player : MonoBehaviour
     {
         hasFlyCheat = !hasFlyCheat;
         rigidBody.useGravity = !hasFlyCheat;
+        Debug.Log("Toggle fly cheat = " + hasFlyCheat);
     }
 
     public void ApplySpeedCheat()

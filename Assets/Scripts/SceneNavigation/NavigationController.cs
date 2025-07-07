@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class NavigationController : MonoBehaviour //SelectionKeeper
 {
@@ -30,12 +31,13 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
     {
         mainMenu.SetActive(true);
         creditsMenu.SetActive(false);
-        pauseMenu.SetActive(false);  
+        pauseMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnEnable()
     {
-        if (navigateAction != null)
+        if (navigateAction != null && GameManager.Instance.CurrentState != GameManager.GameState.Gameplay)
         {
             navigateAction.action.performed += OnNavigate;
             navigateAction.action.canceled += OnNavigate;
@@ -44,12 +46,12 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
 
     void Update()
     {
+        Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
+
         if (eventSystem != null)
         {
             //Debug.Log(eventSystem.currentSelectedGameObject);
-
-            Debug.Log(lastSelectedOption);
-
+            //Debug.Log(lastSelectedOption);
 
             if (eventSystem.currentSelectedGameObject == null)
             {
@@ -98,11 +100,28 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
 
     public void SetPauseActive()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0f;
+
         mainMenu.SetActive(false);
         creditsMenu.SetActive(false);
         pauseMenu.SetActive(true);
 
         eventSystem.SetSelectedGameObject(firstPauseMenuButton);
         lastSelectedOption = firstPauseMenuButton;
+
+        GameManager.Instance.SetState(GameManager.GameState.Paused);
+    }
+
+    public void SetGameplayActive()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
+
+        mainMenu.SetActive(false);
+        creditsMenu.SetActive(false);
+        pauseMenu.SetActive(false);
+
+        GameManager.Instance.SetState(GameManager.GameState.Gameplay);
     }
 }

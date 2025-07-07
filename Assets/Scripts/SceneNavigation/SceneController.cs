@@ -10,12 +10,12 @@ public class SceneController : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void LoadNext()
@@ -23,9 +23,14 @@ public class SceneController : MonoBehaviour
         int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         if (nextIndex < SceneManager.sceneCountInBuildSettings)
+        {
             SceneManager.LoadScene(nextIndex);
+        }
         else
-            SceneManager.LoadScene("MainMenu");
+        {
+            SceneManager.LoadScene(0);
+            GameManager.Instance.SetState(GameManager.GameState.Boot);
+        }
     }
 
     public void LoadNextAdditive()
@@ -46,16 +51,40 @@ public class SceneController : MonoBehaviour
             Scene newScene = SceneManager.GetSceneByBuildIndex(nextIndex);
             if (newScene.IsValid())
                 SceneManager.SetActiveScene(newScene);
+
+            GameManager.Instance.SetState(GameManager.GameState.Gameplay);
         }
         else
         {
-            SceneManager.LoadScene("MainMenu");
+            if (Player.Instance != null)
+                Destroy(Player.Instance.gameObject);
+
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene scene = SceneManager.GetSceneAt(i);
+                if (scene.name != SceneManager.GetSceneByBuildIndex(0).name)
+                {
+                    SceneManager.UnloadSceneAsync(scene);
+                }
+            }
+
+            AsyncOperation loadMenus = SceneManager.LoadSceneAsync("Menus", LoadSceneMode.Additive);
+            while (!loadMenus.isDone)
+                yield return null;
+
+            Scene menusScene = SceneManager.GetSceneByName("Menus");
+            if (menusScene.IsValid())
+                SceneManager.SetActiveScene(menusScene);
+
+            GameManager.Instance.SetState(GameManager.GameState.Menus);
         }
+
     }
 
     public void LoadSceneByName(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        GameManager.Instance.SetState(sceneName == "Menus" ? GameManager.GameState.Menus : GameManager.GameState.Gameplay);
     }
 
     public void LoadSceneByNameAdditive(string sceneName)
@@ -72,6 +101,8 @@ public class SceneController : MonoBehaviour
         Scene newScene = SceneManager.GetSceneByName(sceneName);
         if (newScene.IsValid())
             SceneManager.SetActiveScene(newScene);
+
+        GameManager.Instance.SetState(GameManager.GameState.Gameplay);
     }
 
     public void Exit()

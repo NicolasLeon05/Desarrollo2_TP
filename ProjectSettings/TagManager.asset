@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MovingPlataform
   - Goal
+  - CameraPivot
   layers:
   - Default
   - TransparentFX
