@@ -3,17 +3,19 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform target; // El transform del jugador
-    [SerializeField] private Transform pivot;  // Hijo del jugador, usado para rotación vertical
+    [SerializeField] private Transform target;
+    [SerializeField] private Transform pivot;
     [SerializeField] private InputActionReference moveCamera;
     [SerializeField] private Vector3 offset = new Vector3(0, 2, -5);
-    [SerializeField] private float sensitivity = 2f;
+    [SerializeField] private float mouseSensitivity = 2f;
+    [SerializeField] private float controllerSensitivity = 100f;
     [SerializeField] private float pitchMin = -40f;
     [SerializeField] private float pitchMax = 70f;
 
     private Vector2 lookInput;
     private float yaw;
     private float pitch;
+    private float currentSensitivity;
 
     private void OnEnable()
     {
@@ -26,6 +28,16 @@ public class CameraController : MonoBehaviour
         }
 
         TryAssignPlayerAndPivot();
+        currentSensitivity = mouseSensitivity;
+    }
+
+    private void OnDisable()
+    {
+        if (moveCamera != null)
+        {
+            moveCamera.action.performed -= OnMoveCamera;
+            moveCamera.action.canceled -= OnMoveCamera;
+        }
     }
 
     private void TryAssignPlayerAndPivot()
@@ -51,36 +63,30 @@ public class CameraController : MonoBehaviour
             {
                 pivot = foundPivot;
             }
-
-            else
-            {
-                Debug.LogWarning("Pivot not found");
-            }
         }
-
-        if (target == null)
-            Debug.LogWarning("Target for camera not found");
     }
 
     private void OnMoveCamera(InputAction.CallbackContext context)
     {
         if (Cursor.lockState == CursorLockMode.Locked)
+        {
             lookInput = context.ReadValue<Vector2>();
+
+            var device = context.control.device;
+            if (device is Mouse)
+                currentSensitivity = mouseSensitivity;
+            else if (device is Gamepad)
+                currentSensitivity = controllerSensitivity;
+        }
     }
 
     private void LateUpdate()
     {
-        if (GameManager.Instance.CurrentState == GameManager.GameState.Paused)
-        {
-            lookInput = Vector2.zero;
-            return;
-        }
-
         if (target == null || pivot == null)
             return;
 
-        yaw += lookInput.x * sensitivity;
-        pitch += lookInput.y * sensitivity;
+        yaw += lookInput.x * currentSensitivity * Time.deltaTime;
+        pitch += lookInput.y * currentSensitivity * Time.deltaTime;
         pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
 
         target.rotation = Quaternion.Euler(0f, yaw, 0f);
