@@ -1010,7 +1010,7 @@ MonoBehaviour:
   pivot: {fileID: 845064838}
   moveCamera: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   offset: {x: 0, y: 0, z: -3}
-  mouseSensitivity: 10
+  mouseSensitivity: 15
   controllerSensitivity: 150
   pitchMin: -70
   pitchMax: 70
@@ -2804,6 +2804,9 @@ PrefabInstance:
       addedObject: {fileID: 2095508637}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2095508639}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2095508633}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f7195c99d63e69d4aa835aa4b6b460ef, type: 3}
       insertIndex: -1
@@ -4405,7 +4408,7 @@ GameObject:
   - component: {fileID: 1423999420}
   m_Layer: 6
   m_Name: map
-  m_TagString: Untagged
+  m_TagString: MapLimit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4419,8 +4422,8 @@ Transform:
   m_GameObject: {fileID: 1423999418}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 82, z: 63.8}
-  m_LocalScale: {x: 62.185303, y: 212.63434, z: 198.18018}
+  m_LocalPosition: {x: -2, y: 38.5888, z: 63.8}
+  m_LocalScale: {x: 62.185303, y: 125.809784, z: 198.18018}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 417497739}
@@ -6422,6 +6425,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe30501465deed4ca8ea2635071e6df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2095508639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095508629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c00669171055734083e561f411b7fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invisibleWallTag: MapLimit
+  spawnPoint: {fileID: 233905929}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
