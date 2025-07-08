@@ -34,7 +34,7 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 
 ---
 
-## 🎮 Controls
+##  Controls
 
 | Action         | Keyboard / Mouse             | Gamepad            |
 |----------------|------------------------------|---------------------|
@@ -49,7 +49,7 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 ---
 
 ## Where to play
-- Itch.io: 
+- Itch.io: https://leon-05.itch.io/jump-pepe
 
 ---
 
@@ -62,11 +62,14 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjA0NDM1MS5wbmc=/794x1000/PVVwip.png)
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjA0NDM0OS5wbmc=/794x1000/VZ30QJ.png)
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjA0NDM1MC5wbmc=/794x1000/WyrEzY.png)
 
 ---
 
-## ✨ Credits
+##  Credits
 
 Developed by **Nicolas Leon**    
 Professor: **Juan Pablo Varela**
