@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class NavigationController : MonoBehaviour //SelectionKeeper
+public class NavigationController : MonoBehaviour
 {
 
     private EventSystem eventSystem;
@@ -61,13 +61,13 @@ public class NavigationController : MonoBehaviour //SelectionKeeper
                     Debug.Log("Navigate action pressed");
                     eventSystem.SetSelectedGameObject(lastSelectedOption);
                 }
-                else
-                {
-                    Debug.Log("Navigate action NOT pressed");
-                }
             }
-            else
+            else if (lastSelectedOption != eventSystem.currentSelectedGameObject)
+            {
                 lastSelectedOption = eventSystem.currentSelectedGameObject;
+                SoundManager.Instance.PlaySound(SoundType.SelectButton);
+                Debug.Log("Select button sound played");
+            }
 
         }
         else

@@ -52,6 +52,7 @@ public class SceneController : MonoBehaviour
             if (newScene.IsValid())
                 SceneManager.SetActiveScene(newScene);
 
+            SoundManager.Instance.DestroyDuplicatedAudioListeners();
             GameManager.Instance.SetState(GameManager.GameState.Gameplay);
         }
         else
