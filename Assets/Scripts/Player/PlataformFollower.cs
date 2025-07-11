@@ -5,7 +5,7 @@ public class PlataformFollower : MonoBehaviour
     private Transform currentPlatform;
     private Vector3 lastPlatformPosition;
 
-    void Update()
+    private void Update()
     {
         if (currentPlatform != null)
         {

@@ -16,11 +16,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float flySpeed;
     [SerializeField] private float speedCheatMultiplier = 5f;
 
-    Vector3 playerDirection = Vector3.zero;
-    Vector2 rawMoveInput;
+    private Vector3 playerDirection = Vector3.zero;
+    private Vector2 rawMoveInput;
 
-    float flyUpInput = 0;
-    float flyDownInput = 0;
+    private float flyUpInput = 0;
+    private float flyDownInput = 0;
 
     private InputBuffer jumpBuffer;
     [SerializeField] private float jumpBufferTime = 0.2f;
@@ -123,7 +123,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //MOVEMENT WITH ROTATION
     private void OnMove(InputAction.CallbackContext obj)
     {
         rawMoveInput = obj.ReadValue<Vector2>();
@@ -164,7 +163,6 @@ public class PlayerController : MonoBehaviour
         playerDirection = moveDir.normalized;
     }
 
-    //JUMP
     private void OnJump(InputAction.CallbackContext obj)
     {
         if (!player.hasFlyCheat)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ObjectMovement : MonoBehaviour
 {
-    enum MovementType
+    private enum MovementType
     {
         Vertical,
         HorizontalX,

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ObjectRotator : MonoBehaviour
 {
-    public enum RotationAxis
+    private enum RotationAxis
     {
         X,
         Y,

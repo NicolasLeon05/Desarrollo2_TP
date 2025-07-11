@@ -44,15 +44,12 @@ public class NavigationController : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-        //Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
         Debug.Log(GameManager.Instance.CurrentState);
 
         if (eventSystem != null)
         {
-            //Debug.Log(eventSystem.currentSelectedGameObject);
-            //Debug.Log(lastSelectedOption);
 
             if (eventSystem.currentSelectedGameObject == null)
             {

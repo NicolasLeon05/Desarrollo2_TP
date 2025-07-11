@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] PlayerController controller;
-    [SerializeField] Transform spawnPoint;
+    [SerializeField] private PlayerController controller;
+    [SerializeField] private Transform spawnPoint;
 
     private ForceRequest constantForceRequest;
     private ForceRequest dashRequest;
