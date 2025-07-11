@@ -11,6 +11,8 @@ public enum SoundType
     UnlockLevel
 }
 
+
+[RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour
 {
     [SerializeField] private AudioClip[] soundList;
@@ -38,9 +40,12 @@ public class SoundManager : MonoBehaviour
     public void PlaySound(SoundType sound, float volume = 1)
     {
         if (Instance == null || Instance.audioSource == null)
+        {
+            Debug.Log("NO EXISTE ALGO");
             return;
+        }
 
-        Instance.audioSource.PlayOneShot(Instance.soundList[(int)sound], volume);
+        audioSource.PlayOneShot(soundList[(int)sound], volume);
     }
 
     public void DestroyDuplicatedAudioListeners()
