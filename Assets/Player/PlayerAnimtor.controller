@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 2
-  volume: 1
+  volume: 0.6
   delay: 1
 --- !u!91 &9100000
 AnimatorController:
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 5
-  volume: 0.7
+  volume: 0.6
 --- !u!1101 &3976577059861459124
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -581,20 +581,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &7361329320880959742
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 034d61d257d800642b4cc2a8a4bb7246, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sound: 2
-  volume: 1
 --- !u!1102 &8322612973355586853
 AnimatorState:
   serializedVersion: 6
@@ -610,7 +596,6 @@ AnimatorState:
   - {fileID: 1152198120331183629}
   - {fileID: 5939418016192873861}
   m_StateMachineBehaviours:
-  - {fileID: 7361329320880959742}
   - {fileID: -1662344586259387235}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
