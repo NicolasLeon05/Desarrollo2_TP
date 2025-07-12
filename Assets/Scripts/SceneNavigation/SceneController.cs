@@ -1,11 +1,13 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
-    //[SerializeField] private SceneAssetContainer assetContainer;
+    [SerializeField] private SceneAssets sceneAssets;
+
 
     private void Awake()
     {
@@ -17,21 +19,6 @@ public class SceneController : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-
-    public void LoadNext()
-    {
-        int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
-
-        if (nextIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextIndex);
-        }
-        else
-        {
-            SceneManager.LoadScene(0);
-            GameManager.Instance.SetState(GameManager.GameState.Boot);
-        }
     }
 
     public void LoadNextAdditive()
@@ -64,47 +51,48 @@ public class SceneController : MonoBehaviour
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.name != SceneManager.GetSceneByBuildIndex(0).name)
+                if (scene.name != SceneManager.GetSceneByBuildIndex(sceneAssets.BootScene).name)
                 {
-                    SceneManager.UnloadSceneAsync(scene);
+                    UnloadSceneByIndex(i);
                 }
             }
 
-            AsyncOperation loadMenus = SceneManager.LoadSceneAsync("Menus", LoadSceneMode.Additive);
+            AsyncOperation loadMenus = SceneManager.LoadSceneAsync(sceneAssets.MenusScene, LoadSceneMode.Additive);
             while (!loadMenus.isDone)
                 yield return null;
 
-            Scene menusScene = SceneManager.GetSceneByName("Menus");
+            Scene menusScene = SceneManager.GetSceneAt(sceneAssets.MenusScene);
             if (menusScene.IsValid())
                 SceneManager.SetActiveScene(menusScene);
 
-            GameManager.Instance.SetState(GameManager.GameState.Menus);
+            GameManager.Instance.SetState(GameManager.GameState.MainMenu);
         }
 
     }
 
-    public void LoadSceneByName(string sceneName)
+    public void LoadDefaultScene()
     {
-        SceneManager.LoadScene(sceneName);
-        GameManager.Instance.SetState(sceneName == "Menus" ? GameManager.GameState.Menus : GameManager.GameState.Gameplay);
+        StartCoroutine(LoadDefaultSceneAdditiveRoutine());
     }
 
-    public void LoadSceneByNameAdditive(string sceneName)
+    private IEnumerator LoadDefaultSceneAdditiveRoutine()
     {
-        StartCoroutine(LoadSceneAdditiveAndSetActive(sceneName));
-    }
-
-    private IEnumerator LoadSceneAdditiveAndSetActive(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        int defaultSceneIndex = sceneAssets.MenusScene;
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(defaultSceneIndex, LoadSceneMode.Additive);
         while (!asyncLoad.isDone)
             yield return null;
 
-        Scene newScene = SceneManager.GetSceneByName(sceneName);
-        if (newScene.IsValid())
-            SceneManager.SetActiveScene(newScene);
+        Scene defaultScene = SceneManager.GetSceneByBuildIndex(defaultSceneIndex);
+        if (defaultScene.IsValid())
+            SceneManager.SetActiveScene(defaultScene);
 
-        GameManager.Instance.SetState(GameManager.GameState.Gameplay);
+        SoundManager.Instance.DestroyDuplicatedAudioListeners();
+        GameManager.Instance.SetState(GameManager.GameState.MainMenu);
+    }
+
+    public void UnloadSceneByIndex(int index)
+    {
+        SceneManager.UnloadSceneAsync(index);
     }
 
     public void Exit()
@@ -114,4 +102,14 @@ public class SceneController : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+
+#if UNITY_EDITOR
+    public int GetIndex(SceneAsset asset)
+    {
+        if (!asset)
+            return 0;
+
+        return SceneUtility.GetBuildIndexByScenePath(AssetDatabase.GetAssetPath(asset));
+    }
+#endif
 }

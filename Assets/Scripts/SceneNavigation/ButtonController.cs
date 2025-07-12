@@ -3,16 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class ButtonController : MonoBehaviour
 {
-    public void LoadScene(string sceneName)
-    {
-        SceneController.Instance.LoadSceneByName(sceneName);
-    }
-
-    public void LoadNext()
-    {
-        SceneController.Instance.LoadNext();
-    }
-
     public void LoadNextAdditive()
     {
         SceneController.Instance.LoadNextAdditive();
@@ -37,6 +27,6 @@ public class ButtonController : MonoBehaviour
             }
         }
 
-        GameManager.Instance.SetState(GameManager.GameState.Menus);
+        GameManager.Instance.SetState(GameManager.GameState.MainMenu);
     }
 }

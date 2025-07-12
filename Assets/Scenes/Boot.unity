@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc1afcb7e1e26d4ab5ecca1a941ff32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneAssets: {fileID: 11400000, guid: d6d5d1e083bfeed40b6b6144bf746fe7, type: 2}
 --- !u!4 &188596518
 Transform:
   m_ObjectHideFlags: 0
