@@ -8,5 +8,4 @@ public class PlaySoundEnter : StateMachineBehaviour
     {
         SoundManager.Instance.PlaySound(sound, volume);
     }
-
 }

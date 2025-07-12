@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
+    //[SerializeField] private SceneAssetContainer assetContainer;
 
     private void Awake()
     {
