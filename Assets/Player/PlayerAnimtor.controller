@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 2
-  volume: 0.6
+  volume: 1
   delay: 1
 --- !u!91 &9100000
 AnimatorController:
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 3
-  volume: 0.7
+  volume: 0.4
 --- !u!1102 &2122710426711077426
 AnimatorState:
   serializedVersion: 6
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 5
-  volume: 0.6
+  volume: 0.4
 --- !u!1101 &3976577059861459124
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
