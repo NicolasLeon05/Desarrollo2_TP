@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -17,9 +19,11 @@ public class NavigationController : MonoBehaviour
     [SerializeField] private GameObject firstCreditsMenuButton;
     [SerializeField] private GameObject firstPauseMenuButton;
 
+    private List<GameObject> menus;
+    //HACER FUNCION QUE TOME LOS CHILDREN CON GAMEOBJECT MENU Y LOS AGREGUE A ESTA LISTA
+
     [SerializeField] private InputActionReference navigateAction;
     private Vector2 navigateInput = Vector2.zero;
-
 
     private void Awake()
     {
@@ -50,7 +54,6 @@ public class NavigationController : MonoBehaviour
 
         if (eventSystem != null)
         {
-
             if (eventSystem.currentSelectedGameObject == null)
             {
                 if (WasNavigatePressed())
@@ -65,7 +68,6 @@ public class NavigationController : MonoBehaviour
                 SoundManager.Instance.PlaySound(SoundType.SelectButton);
                 Debug.Log("Select button sound played");
             }
-
         }
         else
         {
@@ -73,6 +75,18 @@ public class NavigationController : MonoBehaviour
         }
 
     }
+
+    public void SetMenuActive(string menuName)
+    {
+        foreach(var menu in menus)
+        {
+            if (menuName == menu.name)
+                menu.SetActive(true);
+            else
+                menu.SetActive(false);
+        }
+    }
+
     private void OnNavigate(InputAction.CallbackContext obj)
     {
         navigateInput = obj.ReadValue<Vector2>();

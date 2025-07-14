@@ -1,14 +1,19 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    //[SerializeField] private SceneAssets sceneAssets;
+    [SerializeField] public List<Level> levels;
+
+    private List<SceneRef> loadedScenes;
+    private List<SceneRef> persistentLoadedScenes;
+
     public static SceneController Instance { get; private set; }
-    [SerializeField] private SceneAssets sceneAssets;
-
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -19,6 +24,52 @@ public class SceneController : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void LoadLevel(Level level)
+    {
+        foreach (var scene in loadedScenes)
+        {
+            if (!scene.IsScenePersistent)
+                UnloadSceneByIndex(scene.SceneIndex);
+        }
+
+        AddLevel(level);
+    }
+
+    public void AddLevel(Level level)
+    {
+        foreach (var scene in level.scenes)
+        {
+            LoadAdditiveById(scene.SceneIndex);
+            if (scene.IsSceneActive)
+                SetSceneActive(scene.SceneIndex);
+
+            if (scene.IsScenePersistent)
+                persistentLoadedScenes.Add(scene);
+        }
+    }
+
+    public void LoadAdditiveById(int index)
+    {
+        StartCoroutine(LoadAdditiveByIdRoutine(index));
+    }
+
+    private IEnumerator LoadAdditiveByIdRoutine(int index)
+    {
+        if (index < SceneManager.sceneCountInBuildSettings)
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
+            while (!asyncLoad.isDone)
+                yield return null;
+
+            Scene newScene = SceneManager.GetSceneByBuildIndex(index);
+            if (newScene.IsValid())
+                SceneManager.SetActiveScene(newScene);
+
+            SoundManager.Instance.DestroyDuplicatedAudioListeners();
+            //GameManager.Instance.SetState(GameManager.GameState.Gameplay);
+        }
     }
 
     public void LoadNextAdditive()
@@ -41,7 +92,7 @@ public class SceneController : MonoBehaviour
                 SceneManager.SetActiveScene(newScene);
 
             SoundManager.Instance.DestroyDuplicatedAudioListeners();
-            GameManager.Instance.SetState(GameManager.GameState.Gameplay);
+            //GameManager.Instance.SetState(GameManager.GameState.Gameplay);
         }
         else
         {
@@ -51,48 +102,46 @@ public class SceneController : MonoBehaviour
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.name != SceneManager.GetSceneByBuildIndex(sceneAssets.BootScene).name)
-                {
-                    UnloadSceneByIndex(i);
-                }
+
+                //MODIFICAR
+                //if (scene.name != SceneManager.GetSceneByBuildIndex(sceneAssets.BootScene).name)
+                //{
+                //    UnloadSceneByIndex(i);
+                //}
             }
 
-            AsyncOperation loadMenus = SceneManager.LoadSceneAsync(sceneAssets.MenusScene, LoadSceneMode.Additive);
-            while (!loadMenus.isDone)
-                yield return null;
+            //MODIFICAR
+            //AsyncOperation loadMenus = SceneManager.LoadSceneAsync(sceneAssets.MenusScene, LoadSceneMode.Additive);
+            //while (!loadMenus.isDone)
+            //    yield return null;
+            //
+            //Scene menusScene = SceneManager.GetSceneAt(sceneAssets.MenusScene);
+            //if (menusScene.IsValid())
+            //    SceneManager.SetActiveScene(menusScene);
 
-            Scene menusScene = SceneManager.GetSceneAt(sceneAssets.MenusScene);
-            if (menusScene.IsValid())
-                SceneManager.SetActiveScene(menusScene);
-
-            GameManager.Instance.SetState(GameManager.GameState.MainMenu);
+            //GameManager.Instance.SetState(GameManager.GameState.MainMenu);
         }
-
-    }
-
-    public void LoadDefaultScene()
-    {
-        StartCoroutine(LoadDefaultSceneAdditiveRoutine());
-    }
-
-    private IEnumerator LoadDefaultSceneAdditiveRoutine()
-    {
-        int defaultSceneIndex = sceneAssets.MenusScene;
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(defaultSceneIndex, LoadSceneMode.Additive);
-        while (!asyncLoad.isDone)
-            yield return null;
-
-        Scene defaultScene = SceneManager.GetSceneByBuildIndex(defaultSceneIndex);
-        if (defaultScene.IsValid())
-            SceneManager.SetActiveScene(defaultScene);
-
-        SoundManager.Instance.DestroyDuplicatedAudioListeners();
-        GameManager.Instance.SetState(GameManager.GameState.MainMenu);
     }
 
     public void UnloadSceneByIndex(int index)
     {
-        SceneManager.UnloadSceneAsync(index);
+        StartCoroutine(UnloadSceneByIndexRoutine(index));
+    }
+
+    private IEnumerator UnloadSceneByIndexRoutine(int index)
+    {
+        AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(index);
+        while (!asyncUnload.isDone)
+            yield return null;
+        //MODIFICAR
+        //GameManager.Instance.SetState(GameManager.GameState.Gameplay);
+    }
+
+
+    public void SetSceneActive(int index)
+    {
+        Scene scene = SceneManager.GetSceneAt(index);
+        SceneManager.SetActiveScene(scene);
     }
 
     public void Exit()
@@ -111,5 +160,7 @@ public class SceneController : MonoBehaviour
 
         return SceneUtility.GetBuildIndexByScenePath(AssetDatabase.GetAssetPath(asset));
     }
+
+
 #endif
 }

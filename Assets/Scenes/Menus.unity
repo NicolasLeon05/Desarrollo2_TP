@@ -994,6 +994,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 485105762}
+  - component: {fileID: 485105763}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -1025,6 +1026,20 @@ RectTransform:
   m_AnchoredPosition: {x: -712.0582, y: -396.71204}
   m_SizeDelta: {x: -1462, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &485105763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485105761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0eb7aeabf5cb242887560aaf1dee74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuName: Main
+  firstButton: {fileID: 382138157}
 --- !u!1 &666071208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1869,6 +1884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1034088804}
+  - component: {fileID: 1034088805}
   m_Layer: 0
   m_Name: CreditsMenu
   m_TagString: Untagged
@@ -1903,6 +1919,20 @@ RectTransform:
   m_AnchoredPosition: {x: -712.0582, y: -396.71204}
   m_SizeDelta: {x: -1358, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1034088805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034088803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0eb7aeabf5cb242887560aaf1dee74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuName: Credits
+  firstButton: {fileID: 322018446}
 --- !u!1 &1129792515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,6 +1942,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1129792516}
+  - component: {fileID: 1129792517}
   m_Layer: 0
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -1943,6 +1974,20 @@ RectTransform:
   m_AnchoredPosition: {x: -712.0582, y: -396.71204}
   m_SizeDelta: {x: -1462, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1129792517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129792515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0eb7aeabf5cb242887560aaf1dee74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuName: Pause
+  firstButton: {fileID: 271800237}
 --- !u!1 &1166080296
 GameObject:
   m_ObjectHideFlags: 0

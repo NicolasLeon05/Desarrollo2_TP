@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     }
     public GameState CurrentState { get; private set; }
 
+    [SerializeField] private Level firstLevel;
+
     public static GameManager Instance { get; private set; }
     private void Awake()
     {
@@ -25,6 +27,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         CurrentState = GameState.Boot;
     }
+
+    private void Start()
+    {
+        SceneController.Instance.LoadLevel(firstLevel);
+    }
+
 
     public void SetState(GameState newState)
     {
