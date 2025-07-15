@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class CheatController : MonoBehaviour
 {
     [SerializeField] private InputActionReference speedCheat;
     [SerializeField] private InputActionReference flyCheat;
