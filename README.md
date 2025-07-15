@@ -26,6 +26,7 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 
 - Main Menu, Pause Menu, and Credits are in the **same scene** (`Menus`).
 - Fully navigable using **keyboard, mouse, or controller**.
+- Menu navigation is handled with Events
 
 
 ### Game Patterns
@@ -63,9 +64,10 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 ---
 
 ##  Screenshots
-![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjA0NDM1MS5wbmc=/794x1000/PVVwip.png)
-![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjA0NDM0OS5wbmc=/794x1000/VZ30QJ.png)
-![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjA0NDM1MC5wbmc=/794x1000/WyrEzY.png)
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDM5OS5wbmc=/original/i%2Fft%2Ba.png)
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDQwMC5wbmc=/original/UMsqDp.png)
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDQwMS5wbmc=/original/npm2O2.png)
+![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDQwMi5wbmc=/original/aYs%2Fto.png)
 
 ---
 
@@ -74,10 +76,11 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 Developed by **Nicolas Leon**    
 Professor: **Juan Pablo Varela**
 Game Assets:
-- RGS_Dev: https://rgsdev.itch.io/free-3d-modular-low-poly-assets-for-prototyping-by-rgsdev
-- Kenney: https://kenney.nl/assets/city-kit-commercial
-- Kay Lousberg: https://kaylousberg.itch.io/kaykit-platformer
-- Mixamo: https://www.mixamo.com
+- Keys by RGS_Dev: https://rgsdev.itch.io/free-3d-modular-low-poly-assets-for-prototyping-by-rgsdev
+- Buildings by Kenney: https://kenney.nl/assets/city-kit-commercial
+- Platforms by Kay Lousberg: https://kaylousberg.itch.io/kaykit-platformer
+- Character model and animations by Mixamo: https://www.mixamo.com
+- Skybox by Avionx: https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633
 
 Sound Effects:
 - https://assetstore.unity.com/packages/audio/sound-fx/voices/effort-sounds-male-npc-player-audio-pack-285382
