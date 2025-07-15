@@ -4,6 +4,8 @@ using UnityEngine;
 public class EventListener : MonoBehaviour
 {
     [SerializeField] private NavigationController navigationController;
+    [SerializeField] private Menu victoryMenu;
+
     private Menu baseMenu;
 
     private void Start()
@@ -17,6 +19,7 @@ public class EventListener : MonoBehaviour
         GameEvents.OnActivateBaseMenu += HandleActivateBaseMenu;
         GameEvents.OnActivateMenu += HandleActivateMenu;
         GameEvents.OnSetAllMenusInactive += HandleSetAllMenusInactive;
+        GameEvents.OnVictory += HandleVictory;
     }
 
 
@@ -26,6 +29,7 @@ public class EventListener : MonoBehaviour
         GameEvents.OnActivateBaseMenu -= HandleActivateBaseMenu;
         GameEvents.OnActivateMenu -= HandleActivateMenu;
         GameEvents.OnSetAllMenusInactive -= HandleSetAllMenusInactive;
+        GameEvents.OnVictory -= HandleVictory;
     }
 
     private void HandleReturnToMainMenu()
@@ -51,5 +55,13 @@ public class EventListener : MonoBehaviour
     private void HandleSetAllMenusInactive()
     {
         navigationController.SetAllInactive();
+    }
+    private void HandleVictory()
+    {
+        GameManager.Instance.ResumeTime();
+        GameManager.Instance.ShowCursor();
+        SceneController.Instance.UnloadNonPersistentScenes();
+        navigationController.SetMenuActive(victoryMenu);
+        GameManager.Instance.SetState(GameManager.GameState.Victory);
     }
 }

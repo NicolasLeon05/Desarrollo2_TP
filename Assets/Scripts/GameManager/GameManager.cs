@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
         MainMenu,
         Credits,
         Gameplay,
-        Paused
+        Paused,
+        Victory
     }
     public GameState CurrentState { get; private set; }
 

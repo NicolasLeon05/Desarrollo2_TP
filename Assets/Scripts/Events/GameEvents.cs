@@ -8,6 +8,7 @@ public static class GameEvents
     public static event Action OnActivateBaseMenu;
     public static event Action<Menu, GameManager.GameState> OnActivateMenu;
     public static event Action OnSetAllMenusInactive;
+    public static event Action OnVictory;
 
     public static void TriggerReturnToMainMenu()
     {
@@ -27,5 +28,10 @@ public static class GameEvents
     public static void TriggerSetAllMenusInactive()
     {
         OnSetAllMenusInactive?.Invoke();
+    }
+
+    public static void TriggerVictory()
+    {
+        OnVictory?.Invoke();
     }
 }
