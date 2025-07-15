@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
     [SerializeField] public List<Level> levels;
+    [SerializeField] private Level bootLevel;
 
     private List<SceneRef> loadedScenes = new();
     private List<SceneRef> persistentLoadedScenes = new();
@@ -33,6 +34,8 @@ public class SceneController : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SaveBootScenes();
     }
 
     /// <summary>
@@ -40,13 +43,14 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void LoadLevel(Level level)
     {
+        AddLevel(level);
+
         foreach (var scene in loadedScenes)
         {
-            if (!scene.IsPersistent)
+            if (!scene.IsPersistent && !level.scenes.Contains(scene))
                 UnloadSceneByIndex(scene.Index);
         }
 
-        AddLevel(level);
     }
 
     /// <summary>
@@ -58,14 +62,14 @@ public class SceneController : MonoBehaviour
     {
         foreach (var scene in level.scenes)
         {
-            if (!loadedScenes.Contains(scene))
+            if (!loadedScenes.Contains(scene) && !persistentLoadedScenes.Contains(scene))
             {
                 LoadAdditiveByRef(scene);
                 loadedScenes.Add(scene);
-            }
 
-            if (scene.IsPersistent && !persistentLoadedScenes.Contains(scene))
-                persistentLoadedScenes.Add(scene);
+                if (scene.IsPersistent)
+                    persistentLoadedScenes.Add(scene);
+            }
         }
     }
 
@@ -74,7 +78,9 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void UnloadAllScenes()
     {
-        foreach (var scene in loadedScenes)
+        var scenesToUnload = new List<SceneRef>(loadedScenes);
+
+        foreach (var scene in scenesToUnload)
         {
             UnloadSceneByIndex(scene.Index);
         }
@@ -84,10 +90,19 @@ public class SceneController : MonoBehaviour
     }
 
     /// <summary>
-    /// Unloads all non-persistent scenes
+    /// Finds a persistent scene and sets it active and unloads all the non persitent ones
     /// </summary>
     public void UnloadNonPersistentScenes()
     {
+        foreach (var scene in loadedScenes)
+        {
+            if (scene.IsActive)
+            {
+                SetSceneActive(scene.Index);
+                break;
+            }
+        }
+
         foreach (var scene in loadedScenes)
         {
             if (!scene.IsPersistent)
@@ -95,6 +110,21 @@ public class SceneController : MonoBehaviour
         }
 
         loadedScenes.RemoveAll(scene => !scene.IsPersistent);
+    }
+
+    /// <summary>
+    /// Save the scenes in the boot level
+    /// </summary>
+    public void SaveBootScenes()
+    {
+        foreach (var scene in bootLevel.scenes)
+        {
+            if (!loadedScenes.Contains(scene) && !persistentLoadedScenes.Contains(scene))
+                loadedScenes.Add(scene);
+
+            if (scene.IsPersistent && !persistentLoadedScenes.Contains(scene))
+                persistentLoadedScenes.Add(scene);
+        }
     }
 
     /// <summary>

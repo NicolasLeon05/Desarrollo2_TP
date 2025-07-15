@@ -6,6 +6,12 @@ public class MenuTransitionButton : MonoBehaviour
     [SerializeField] private NavigationController navigationController;
     [SerializeField] private GameManager.GameState stateToTransition;
 
+  
+    public void ActivateBaseMenu()
+    {
+        GameEvents.TriggerActivateBaseMenu();
+    }
+
     /// <summary>
     /// Calls the SetMenuActive() function from NavigationController.
     /// Sets the GameManager state to the assigned target state
@@ -14,6 +20,7 @@ public class MenuTransitionButton : MonoBehaviour
     {
         if (targetMenu != null)
             navigationController.SetMenuActive(targetMenu);
+
         GameManager.Instance.SetState(stateToTransition);
     }
 

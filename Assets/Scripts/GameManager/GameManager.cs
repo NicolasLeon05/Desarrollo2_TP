@@ -30,8 +30,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SceneController.Instance.LoadLevel(firstLevel);
         CurrentState = GameState.MainMenu;
+        SceneController.Instance.LoadLevel(firstLevel);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         if (Player.Instance != null)
             Destroy(Player.Instance.gameObject);
 
-        SceneController.Instance.UnloadAllScenes();
+        SceneController.Instance.UnloadNonPersistentScenes();
         SceneController.Instance.LoadLevel(firstLevel);
         CurrentState = GameState.MainMenu;
     }

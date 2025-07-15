@@ -34,10 +34,6 @@ public class SceneTransitionButton : MonoBehaviour
     /// </summary>
     public void ReturnToMainMenu()
     {
-        GameManager.Instance.ResumeTime();
-        GameManager.Instance.ShowCursor();
-
-        SceneController.Instance.UnloadNonPersistentScenes();
-        GameManager.Instance.SetState(GameManager.GameState.MainMenu);
+        GameEvents.TriggerReturnToMainMenu();
     }
 }
