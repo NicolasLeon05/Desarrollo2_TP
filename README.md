@@ -81,6 +81,7 @@ Game Assets:
 - Platforms by Kay Lousberg: https://kaylousberg.itch.io/kaykit-platformer
 - Character model and animations by Mixamo: https://www.mixamo.com
 - Skybox by Avionx: https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633
+- Buttons by Royal Graphics Resources: https://royalgraphicsresources.itch.io/gui-button-set
 
 Sound Effects:
 - https://assetstore.unity.com/packages/audio/sound-fx/voices/effort-sounds-male-npc-player-audio-pack-285382
