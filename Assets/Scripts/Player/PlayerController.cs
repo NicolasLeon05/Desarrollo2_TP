@@ -186,10 +186,6 @@ public class PlayerController : MonoBehaviour, IJumpProvider
         Vector3 inputDir = new Vector3(rawMoveInput.x, 0, rawMoveInput.y);
 
         Transform camTransform = Camera.main.transform;
-        if (camTransform != null)
-        {
-            Debug.Log("Camera.main: " + camTransform.name + " (escena: " + camTransform.gameObject.scene.name + ")");
-        }
         Vector3 camForward = camTransform.forward;
         Vector3 camRight = camTransform.right;
 

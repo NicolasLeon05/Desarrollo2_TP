@@ -20,7 +20,5 @@ public class PlaySoundUpdate : StateMachineBehaviour
             SoundManager.Instance.PlaySound(sound, volume);
             timePassed = 0.0f;
         }
-
-        Debug.Log(timePassed);
     }
 }

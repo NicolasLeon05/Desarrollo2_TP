@@ -62,16 +62,12 @@ public class NavigationController : MonoBehaviour
             if (eventSystem.currentSelectedGameObject == null)
             {
                 if (WasNavigatePressed())
-                {
-                    Debug.Log("Navigate action pressed");
                     eventSystem.SetSelectedGameObject(lastSelectedOption);
-                }
             }
             else if (lastSelectedOption != eventSystem.currentSelectedGameObject)
             {
                 lastSelectedOption = eventSystem.currentSelectedGameObject;
                 SoundManager.Instance.PlaySound(SoundType.SelectButton);
-                Debug.Log("Select button sound played");
             }
         }
         else
