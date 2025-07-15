@@ -192,7 +192,6 @@ public class Player : MonoBehaviour
         currentDirection.Normalize();
         float angleChange = Vector3.Angle(newDirection, currentDirection);
 
-        //Debug.Log("Angle change: " + angleChange);
 
         if (angleChange > turnAngleLimitDown && angleChange < turnAngleLimitUp)
             AdjustVelocityToAngle(newDirection);
@@ -307,7 +306,7 @@ public class Player : MonoBehaviour
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
             if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
             {
-                //Debug.Log("Raycast Hit");
+                Debug.Log("Raycast Hit");
                 isOnGround = true;
                 lastGroundedTime = Time.time;
                 jumps = 0;

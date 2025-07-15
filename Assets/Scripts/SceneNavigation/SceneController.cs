@@ -97,7 +97,6 @@ public class SceneController : MonoBehaviour
 
 
             SoundManager.Instance.DestroyDuplicatedAudioListeners();
-            //GameManager.Instance.SetState(GameManager.GameState.Gameplay);
         }
     }
 
@@ -121,7 +120,6 @@ public class SceneController : MonoBehaviour
                 SceneManager.SetActiveScene(newScene);
 
             SoundManager.Instance.DestroyDuplicatedAudioListeners();
-            //GameManager.Instance.SetState(GameManager.GameState.Gameplay);
         }
     }
 
@@ -161,16 +159,4 @@ public class SceneController : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-
-#if UNITY_EDITOR
-    public int GetIndex(SceneAsset asset)
-    {
-        if (!asset)
-            return 0;
-
-        return SceneUtility.GetBuildIndexByScenePath(AssetDatabase.GetAssetPath(asset));
-    }
-
-
-#endif
 }

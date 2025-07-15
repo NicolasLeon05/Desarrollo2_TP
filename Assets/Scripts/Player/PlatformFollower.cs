@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlataformFollower : MonoBehaviour
+public class PlatformFollower : MonoBehaviour
 {
     private Transform currentPlatform;
     private Vector3 lastPlatformPosition;
