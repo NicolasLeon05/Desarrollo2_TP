@@ -67,7 +67,6 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 ![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDM5OS5wbmc=/original/i%2Fft%2Ba.png)
 ![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDQwMC5wbmc=/original/UMsqDp.png)
 ![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDQwMS5wbmc=/original/npm2O2.png)
-![](https://img.itch.zone/aW1hZ2UvMzcwNDI1Ni8yMjE2MDQwMi5wbmc=/original/aYs%2Fto.png)
 
 ---
 
