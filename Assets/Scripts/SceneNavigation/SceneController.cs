@@ -82,7 +82,8 @@ public class SceneController : MonoBehaviour
 
         foreach (var scene in scenesToUnload)
         {
-            UnloadSceneByIndex(scene.Index);
+            if (scene.Index != SceneManager.GetActiveScene().buildIndex)
+                UnloadSceneByIndex(scene.Index);
         }
 
         loadedScenes.Clear();
@@ -90,7 +91,8 @@ public class SceneController : MonoBehaviour
     }
 
     /// <summary>
-    /// Finds a persistent scene and sets it active and unloads all the non persitent ones
+    /// Finds a persistent scene and sets it active.
+    /// Then unloads all the non persitent ones
     /// </summary>
     public void UnloadNonPersistentScenes()
     {

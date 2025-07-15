@@ -5,7 +5,9 @@ using UnityEngine;
 public static class GameEvents
 {
     public static event Action OnReturnToMainMenu;
-    public static event Action OnActivateMenu;
+    public static event Action OnActivateBaseMenu;
+    public static event Action<Menu, GameManager.GameState> OnActivateMenu;
+    public static event Action OnSetAllMenusInactive;
 
     public static void TriggerReturnToMainMenu()
     {
@@ -16,6 +18,18 @@ public static class GameEvents
     public static void TriggerActivateBaseMenu()
     {
         Debug.Log("ACTIVATE MENU EVENT CALLED");
-        OnActivateMenu?.Invoke();
+        OnActivateBaseMenu?.Invoke();
+    }
+
+    public static void TriggerActivateMenu(Menu menu, GameManager.GameState state)
+    {
+        Debug.Log("REQUEST MENU TRANSITION EVENT CALLED");
+        OnActivateMenu?.Invoke(menu, state);
+    }
+
+    public static void TriggerSetAllMenusInactive()
+    {
+        Debug.Log("SET ALL MENUS INACTIVE EVENT CALLED");
+        OnSetAllMenusInactive?.Invoke();
     }
 }

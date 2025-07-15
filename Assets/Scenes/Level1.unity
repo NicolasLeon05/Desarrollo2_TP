@@ -3725,7 +3725,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1269298928}
-  - component: {fileID: 1269298927}
+  - component: {fileID: 1269298929}
   m_Layer: 0
   m_Name: CheatController
   m_TagString: Untagged
@@ -3733,22 +3733,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1269298927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269298926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d92d60e2f7ea214aba2cc069c91cb81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedCheat: {fileID: 4119254292921438816, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  flyCheat: {fileID: 2856107451056883337, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  nextLevelCheat: {fileID: -3951041289960971269, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  player: {fileID: 2095508632}
 --- !u!4 &1269298928
 Transform:
   m_ObjectHideFlags: 0
@@ -3764,6 +3748,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1269298929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269298926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d92d60e2f7ea214aba2cc069c91cb81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedCheat: {fileID: 4119254292921438816, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  flyCheat: {fileID: 2856107451056883337, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  nextLevelCheat: {fileID: -3951041289960971269, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  player: {fileID: 2095508632}
 --- !u!1001 &1286420861
 PrefabInstance:
   m_ObjectHideFlags: 0

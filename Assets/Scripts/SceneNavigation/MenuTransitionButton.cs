@@ -13,15 +13,13 @@ public class MenuTransitionButton : MonoBehaviour
     }
 
     /// <summary>
-    /// Calls the SetMenuActive() function from NavigationController.
-    /// Sets the GameManager state to the assigned target state
+    /// Triggers an event that sets the targetMenu as active
+    /// and the current state as the stateToTransition
     /// </summary>
     public void ActivateMenu()
     {
         if (targetMenu != null)
-            navigationController.SetMenuActive(targetMenu);
-
-        GameManager.Instance.SetState(stateToTransition);
+            GameEvents.TriggerActivateMenu(targetMenu, stateToTransition);
     }
 
     /// <summary>
@@ -30,7 +28,7 @@ public class MenuTransitionButton : MonoBehaviour
     /// </summary>
     public void SetAllInactive()
     {
-        navigationController.SetAllInactive();
+        GameEvents.TriggerSetAllMenusInactive();
         GameManager.Instance.SetState(stateToTransition);
     }
 }
