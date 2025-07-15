@@ -10,16 +10,19 @@ public class MapLimiter : MonoBehaviour
     /// </summary>
     private void OnTriggerExit(Collider other)
     {
-        if (spawnPoint != null)
+        if (other.CompareTag("Player"))
         {
-            other.transform.position = spawnPoint.position;
-            Rigidbody playerRigidBody = other.GetComponent<Rigidbody>();
-            if (playerRigidBody != null)
-                playerRigidBody.linearVelocity = Vector3.zero;
-        }
-        else
-        {
-            Debug.LogWarning("Spawn Point not assigned in MapLimiter.");
+            if (spawnPoint != null)
+            {
+                Rigidbody playerRigidBody = other.GetComponent<Rigidbody>();
+                playerRigidBody.MovePosition(spawnPoint.position + Vector3.up * 2f);
+                if (playerRigidBody != null)
+                    playerRigidBody.linearVelocity = Vector3.zero;
+            }
+            else
+            {
+                Debug.LogWarning("Spawn Point not assigned in MapLimiter.");
+            }
         }
     }
 }

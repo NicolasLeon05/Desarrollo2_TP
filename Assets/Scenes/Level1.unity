@@ -5941,6 +5941,9 @@ MonoBehaviour:
   turnAngleLimitUp: 90
   jumpRayDistance: 0.15
   coyoteTime: 0.2
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   dashDuration: 0.3
   hasFlyCheat: 0
   hasSpeedCheat: 0

@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
@@ -35,6 +33,7 @@ public class Player : MonoBehaviour
     private Vector3 JumpRayDirection;
     [SerializeField] private float jumpRayDistance = 0.15f;
     [SerializeField] private float coyoteTime = 0.2f;
+    [SerializeField] private LayerMask groundLayerMask;
 
     [Header("Dash")]
     [SerializeField] private float dashDuration = 0.3f;
@@ -203,7 +202,7 @@ public class Player : MonoBehaviour
             velocity.y = yVelocity;
             rigidBody.linearVelocity = velocity;
         }
-        animator.SetFloat("Speed",rigidBody.linearVelocity.magnitude);
+        animator.SetFloat("Speed", rigidBody.linearVelocity.magnitude);
     }
 
     /// <summary>
@@ -360,13 +359,15 @@ public class Player : MonoBehaviour
         }
         else
         {
+            Debug.Log("Ground ignore time check passed");
+
             jumpRayOrigin = transform.position + Vector3.up * 0.1f;
             JumpRayDirection = Vector3.down;
 
             Debug.DrawRay(jumpRayOrigin, JumpRayDirection, Color.red);
-            if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, jumpRayDistance))
+            if (Physics.Raycast(jumpRayOrigin, JumpRayDirection, out RaycastHit hit, jumpRayDistance, groundLayerMask))
             {
-                Debug.Log("Raycast Hit");
+                Debug.Log("Ground hit: " + hit.collider.name);
                 isOnGround = true;
                 lastGroundedTime = Time.time;
                 jumps = 0;
@@ -376,7 +377,6 @@ public class Player : MonoBehaviour
                 isOnGround = false;
             }
         }
-
         isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
