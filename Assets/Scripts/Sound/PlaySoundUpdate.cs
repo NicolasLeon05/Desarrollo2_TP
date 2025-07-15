@@ -6,6 +6,11 @@ public class PlaySoundUpdate : StateMachineBehaviour
     [SerializeField, Range(0, 1)] private float volume = 1;
     [SerializeField] private float delay = 1f;
     private float timePassed = 0.0f;
+
+    /// <summary>
+    /// Called on every frame update while in the current animation state.
+    /// Plays the assigned sound in intervals defined by the delay value
+    /// </summary>
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         timePassed += Time.fixedDeltaTime;

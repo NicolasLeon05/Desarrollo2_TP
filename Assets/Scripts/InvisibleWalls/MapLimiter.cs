@@ -4,6 +4,10 @@ public class MapLimiter : MonoBehaviour
 {
     [SerializeField] private Transform spawnPoint;
 
+    /// <summary>
+    /// Takes the player back to the spawn point and removes it's linear velocity.
+    /// Called when player exits the map limits
+    /// </summary>
     private void OnTriggerExit(Collider other)
     {
         if (spawnPoint != null)

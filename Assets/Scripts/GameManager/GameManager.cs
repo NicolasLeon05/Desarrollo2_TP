@@ -34,12 +34,18 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.MainMenu;
     }
 
-
+    /// <summary>
+    /// Changes the current game state
+    /// </summary>
     public void SetState(GameState newState)
     {
         CurrentState = newState;
     }
 
+    /// <summary>
+    /// Destroys the instance of the player and unloads all scenes.
+    /// Then loads the first scene again
+    /// </summary>
     public void ResetGame()
     {
         if (Player.Instance != null)
@@ -50,22 +56,34 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.MainMenu;
     }
 
+    /// <summary>
+    /// Pauses the time by setting the timeScale to 0
+    /// </summary>
     public void PauseTime()
     {
         Time.timeScale = 0f;
     }
 
+    /// <summary>
+    /// Resumes the time by setting the timeScale to 1
+    /// </summary>
     public void ResumeTime()
     {
         Time.timeScale = 1f;
     }
 
-    public void LockMouse()
+    /// <summary>
+    /// Locks the cursor and makes it invisible
+    /// </summary>
+    public void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void ShowMouse()
+    /// <summary>
+    /// Unlocks the cursor and makes it visible
+    /// </summary>
+    public void ShowCursor()
     {
         Cursor.lockState = CursorLockMode.None;
     }

@@ -17,6 +17,10 @@ public class ObjectMovement : MonoBehaviour
     private Vector3 targetOffset;
     private bool goingForward = true;
 
+
+    /// <summary>
+    /// Sets the target offset based on the axys the object will move in
+    /// </summary>
     private void Awake()
     {
         startPos = transform.position;
@@ -35,6 +39,9 @@ public class ObjectMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Moves the object from his starting position to the target position in the correspoding time, and then back again
+    /// </summary>
     private void Update()
     {
         Vector3 targetPos = goingForward ? startPos + targetOffset : startPos;

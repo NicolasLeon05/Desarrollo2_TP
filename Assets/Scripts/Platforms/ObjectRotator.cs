@@ -13,6 +13,9 @@ public class ObjectRotator : MonoBehaviour
     [SerializeField] private float rotationSpeed = 90f;
     private Vector3 rotationVector;
 
+    /// <summary>
+    /// Sets the rotation vector based on the axys the object will rotate in
+    /// </summary>
     private void Awake()
     {
         if (axis == RotationAxis.X)
@@ -25,7 +28,10 @@ public class ObjectRotator : MonoBehaviour
             rotationVector = Vector3.up;
     }
 
-    private void FixedUpdate()
+    /// <summary>
+    /// Rotates the object in the designated axys at the designated speed
+    /// </summary>
+    private void Update()
     {
         transform.Rotate(rotationVector, rotationSpeed * Time.deltaTime, Space.Self);
     }

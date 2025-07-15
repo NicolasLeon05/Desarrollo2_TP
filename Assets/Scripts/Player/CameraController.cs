@@ -17,9 +17,14 @@ public class CameraController : MonoBehaviour
     private float pitch;
     private float currentSensitivity;
 
+    /// <summary>
+    /// Locks the cursor and subscribes to camera input events.
+    /// Tries to assign the player and its pivot.
+    /// Sets default sensitivity
+    /// </summary>
     private void OnEnable()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        GameManager.Instance.LockCursor();
 
         if (moveCamera != null)
         {
@@ -31,6 +36,9 @@ public class CameraController : MonoBehaviour
         currentSensitivity = mouseSensitivity;
     }
 
+    /// <summary>
+    /// Unsubscribes from camera input events when disabled
+    /// </summary>
     private void OnDisable()
     {
         if (moveCamera != null)
@@ -40,32 +48,33 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Searches for the player and its Pivot transform if not already assigned
+    /// </summary>
     private void TryAssignPlayerAndPivot()
     {
         if (target == null && Player.Instance != null)
-        {
             target = Player.Instance.transform;
-        }
 
         if (target == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
-            {
                 target = player.transform;
-            }
         }
 
         if (target != null && pivot == null)
         {
             Transform foundPivot = target.Find("Pivot");
             if (foundPivot != null)
-            {
                 pivot = foundPivot;
-            }
         }
     }
 
+    /// <summary>
+    /// Reads camera input and stores it as look input.
+    /// Sets the current sensitivity depending on the input device (mouse or gamepad)
+    /// </summary>
     private void OnMoveCamera(InputAction.CallbackContext context)
     {
         if (Cursor.lockState == CursorLockMode.Locked)
@@ -80,6 +89,10 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates camera yaw and pitch, clamps the vertical angle,
+    /// and positions the camera behind the player relative to the pivot and offset
+    /// </summary>
     private void LateUpdate()
     {
         if (target == null || pivot == null)

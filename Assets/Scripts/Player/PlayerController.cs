@@ -25,15 +25,32 @@ public class PlayerController : MonoBehaviour, IJumpProvider
     private InputBuffer jumpBuffer;
     [SerializeField] private float jumpBufferTime = 0.2f;
 
+    /// <summary>
+    /// Returns true if a jump input is currently buffered
+    /// </summary>
     public bool HasBufferedJump() => jumpBuffer.Peek();
+
+    /// <summary>
+    /// Consumes the buffered jump input
+    /// </summary>
     public void ConsumeBufferedJump() => jumpBuffer.Consume();
+
+    /// <summary>
+    /// Returns the jump force value
+    /// </summary>
     public float GetJumpForce() => jumpForce;
 
+    /// <summary>
+    /// Initializes the jump buffer
+    /// </summary>
     private void Awake()
     {
         jumpBuffer = new InputBuffer(jumpBufferTime);
     }
 
+    /// <summary>
+    /// Subscribes to input actions for movement, jump, dash, and fly
+    /// </summary>
     private void OnEnable()
     {
         if (moveAction != null)
@@ -66,13 +83,19 @@ public class PlayerController : MonoBehaviour, IJumpProvider
         }
     }
 
-
+    /// <summary>
+    /// Called every frame to check and apply movement and fly
+    /// </summary>
     private void Update()
     {
         CheckMovement();
         CheckFly();
     }
 
+    /// <summary>
+    /// Handles horizontal movement and sends force request to player.
+    /// Applies speed cheat multiplier if active
+    /// </summary>
     private void CheckMovement()
     {
         if (rawMoveInput.magnitude > 0.01f)
@@ -96,6 +119,10 @@ public class PlayerController : MonoBehaviour, IJumpProvider
         }
     }
 
+    /// <summary>
+    /// Handles vertical movement when fly cheat is active.
+    /// Sends fly force requests up or down based on input to player
+    /// </summary>
     private void CheckFly()
     {
         if (!player.hasFlyCheat)
@@ -126,11 +153,17 @@ public class PlayerController : MonoBehaviour, IJumpProvider
         }
     }
 
+    /// <summary>
+    /// Reads raw movement input and stores it
+    /// </summary>
     private void OnMove(InputAction.CallbackContext obj)
     {
         rawMoveInput = obj.ReadValue<Vector2>();
     }
 
+    /// <summary>
+    /// Creates a dash force request in the forward direction and sends it to the player.
+    /// </summary>
     private void OnDash(InputAction.CallbackContext obj)
     {
         RotatePlayerToCamera();
@@ -145,6 +178,9 @@ public class PlayerController : MonoBehaviour, IJumpProvider
         player.RequestDash(request);
     }
 
+    /// <summary>
+    /// Rotates the player to face the movement direction relative to the camera.
+    /// </summary>
     private void RotatePlayerToCamera()
     {
         Vector3 inputDir = new Vector3(rawMoveInput.x, 0, rawMoveInput.y);
@@ -166,16 +202,27 @@ public class PlayerController : MonoBehaviour, IJumpProvider
         playerDirection = moveDir.normalized;
     }
 
+
+    /// <summary>
+    /// Buffers the jump input if the fly cheat is not active
+    /// </summary>
     private void OnJump(InputAction.CallbackContext obj)
     {
         if (!player.hasFlyCheat)
             jumpBuffer.Register();
     }
+
+    /// <summary>
+    /// Stores the vertical input for flying up
+    /// </summary>
     private void OnFlyUp(InputAction.CallbackContext context)
     {
         flyUpInput = context.ReadValue<float>();
     }
 
+    /// <summary>
+    /// Stores the vertical input for flying down
+    /// </summary>
     private void OnFlyDown(InputAction.CallbackContext context)
     {
         flyDownInput = context.ReadValue<float>();

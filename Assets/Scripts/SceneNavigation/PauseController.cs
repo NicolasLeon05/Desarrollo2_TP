@@ -46,7 +46,8 @@ public class PauseController : MonoBehaviour
         if (isPaused)
         {
             GameManager.Instance.PauseTime();
-            GameManager.Instance.ShowMouse();
+            GameManager.Instance.ShowCursor();
+            GameManager.Instance.SetState(GameManager.GameState.Paused);
 
             navigationController.SetMenuActive(pauseMenu);
             int pauseSceneBuildIndex = pauseMenu.gameObject.scene.buildIndex;
@@ -55,7 +56,8 @@ public class PauseController : MonoBehaviour
         else
         {
             GameManager.Instance.ResumeTime();
-            GameManager.Instance.LockMouse();
+            GameManager.Instance.LockCursor();
+            GameManager.Instance.SetState(GameManager.GameState.Gameplay);
 
             navigationController.SetAllInactive();
             SceneController.Instance.SetSceneActive(SceneController.Instance.PreviousActiveScene.Index);

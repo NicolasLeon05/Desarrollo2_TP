@@ -57,6 +57,10 @@ public class Player : MonoBehaviour
 
     public static Player Instance { get; private set; }
 
+    /// <summary>
+    /// Initializes the player instance, Rigidbody, Animator, and optional spawn position.
+    /// Ensures only one instance exists using Singleton pattern.
+    /// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -77,21 +81,33 @@ public class Player : MonoBehaviour
             rigidBody.position = spawnPoint.position;
     }
 
+    /// <summary>
+    /// Stores a dash force request
+    /// </summary>
     public void RequestDash(ForceRequest forceRequest)
     {
         dashRequest = forceRequest;
     }
 
+    /// <summary>
+    /// Stores a constant force request
+    /// </summary>
     public void RequestConstantForce(ForceRequest forceRequest)
     {
         constantForceRequest = forceRequest;
     }
 
+    /// <summary>
+    /// Stores a vertical fly force request
+    /// </summary>
     public void RequestFlyForce(ForceRequest forceRequest)
     {
         flyRequest = forceRequest;
     }
 
+    /// <summary>
+    /// Handles animation updates, dash, ground detection, movement, jump and fly cheat.
+    /// </summary>
     private void FixedUpdate()
     {
         UpdateAnimationStates();
@@ -127,6 +143,9 @@ public class Player : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Manages jumping based on coyote time and remaining jumps
+    /// </summary>
     private void ManageJump()
     {
         if (jumpProvider.HasBufferedJump())
@@ -143,6 +162,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles horizontal movement or applies braking when idle.
+    /// </summary>
     private void ManageHorizontalMovement()
     {
         if (constantForceRequest != null)
@@ -157,6 +179,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies horizontal force based on input and limits horizontal velocity
+    /// </summary>
     private void MoveHorizontally()
     {
         if (isOnGround)
@@ -181,6 +206,9 @@ public class Player : MonoBehaviour
         animator.SetFloat("Speed",rigidBody.linearVelocity.magnitude);
     }
 
+    /// <summary>
+    /// Adjusts player's linear velocity if movement direction changed too much
+    /// </summary>
     private void ManageMovementAngleChange()
     {
         Vector3 newDirection = constantForceRequest.direction;
@@ -197,12 +225,18 @@ public class Player : MonoBehaviour
             AdjustVelocityToAngle(newDirection);
     }
 
+    /// <summary>
+    /// Rotates current velocity toward the new movement direction.
+    /// </summary>
     private void AdjustVelocityToAngle(Vector3 newDirection)
     {
         newDirection *= rigidBody.linearVelocity.magnitude;
         rigidBody.linearVelocity = newDirection;
     }
 
+    /// <summary>
+    /// Applies braking force to slow down the player
+    /// </summary>
     private void ApplyBrake()
     {
         if (isOnGround)
@@ -217,6 +251,9 @@ public class Player : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Handles vertical movement using fly force when the cheat is active
+    /// </summary>
     private void ManageFly()
     {
         if (flyRequest != null)
@@ -230,6 +267,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes a dash movement, overrides velocity, disables gravity temporarily.
+    /// </summary>
     private void Dash()
     {
         previousVelocity = rigidBody.linearVelocity;
@@ -246,6 +286,9 @@ public class Player : MonoBehaviour
         dashRequest = null;
     }
 
+    /// <summary>
+    /// Restores previous velocity after a dash finishes
+    /// </summary>
     private void RestorePreDashVelocity()
     {
         if (previousVelocity.magnitude < 0.1f)
@@ -257,11 +300,18 @@ public class Player : MonoBehaviour
         rigidBody.linearVelocity = newVelocity;
     }
 
+    /// <summary>
+    /// Returns whether the player is currently in the middle of a dash
+    /// </summary>
     public bool IsDashing()
     {
         return Time.time - dashStartTime < dashDuration;
     }
 
+    /// <summary>
+    /// Returns whether the player's horizontal velocity os higher than the max speed allowed.
+    /// Takes cheat mode in consideration
+    /// </summary>
     private bool IsOverVelocityLimit()
     {
         Vector3 horizontal = new Vector3(rigidBody.linearVelocity.x, 0, rigidBody.linearVelocity.z);
@@ -272,6 +322,9 @@ public class Player : MonoBehaviour
             return horizontal.magnitude > maxSpeedWithCheat;
     }
 
+    /// <summary>
+    /// Executes a jump by applying upward impulse force
+    /// </summary>
     private void Jump()
     {
         float jumpForce = jumpProvider.GetJumpForce();
@@ -285,6 +338,9 @@ public class Player : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sets vertical velocity to zero
+    /// </summary>
     private void ResetVelocityY()
     {
         Vector3 velocity = rigidBody.linearVelocity;
@@ -292,6 +348,10 @@ public class Player : MonoBehaviour
         rigidBody.linearVelocity = velocity;
     }
 
+    /// <summary>
+    /// Uses a raycast to check whether the player is grounded.
+    /// Calculates coyote time and resets jump count
+    /// </summary>
     private void CheckGrounded()
     {
         if (Time.time - lastJumpTime < groundIgnoreTime)
@@ -320,6 +380,9 @@ public class Player : MonoBehaviour
         isOnCoyoteTime = (Time.time - lastGroundedTime <= coyoteTime);
     }
 
+    /// <summary>
+    /// Updates the player's animation parameters based on movement state
+    /// </summary>
     private void UpdateAnimationStates()
     {
         bool isJumping = rigidBody.linearVelocity.y > 0.1f && !isOnGround;
@@ -335,6 +398,9 @@ public class Player : MonoBehaviour
         animator.SetBool("isDashing", dashActivated);
     }
 
+    /// <summary>
+    /// Toggles the fly cheat on or off, affecting gravity
+    /// </summary>
     public void ApplyFlyCheat()
     {
         hasFlyCheat = !hasFlyCheat;
@@ -342,12 +408,18 @@ public class Player : MonoBehaviour
         Debug.Log("Toggle fly cheat = " + hasFlyCheat);
     }
 
+    /// <summary>
+    /// Toggles the speed cheat on or off
+    /// </summary>
     public void ApplySpeedCheat()
     {
         hasSpeedCheat = !hasSpeedCheat;
         Debug.Log("Toggle speed cheat = " + hasSpeedCheat);
     }
 
+    /// <summary>
+    /// Instantly moves the player to the specified goal
+    /// </summary>
     public void ApplyTeleportCheat(Transform goal)
     {
         transform.position = goal.position;

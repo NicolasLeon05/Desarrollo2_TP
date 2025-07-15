@@ -11,6 +11,9 @@ public class InputBuffer
         this.bufferTime = bufferTime;
     }
 
+    /// <summary>
+    /// Registers a new input in the buffer, if none are currently stored.
+    /// </summary>
     public void Register()
     {
         CleanExpiredInputs();
@@ -19,12 +22,18 @@ public class InputBuffer
             inputTimestamps.Enqueue(Time.time);
     }
 
+    /// <summary>
+    /// Returns true if there is a valid (non-expired) input in the buffer.
+    /// </summary>
     public bool Peek()
     {
         CleanExpiredInputs();
         return inputTimestamps.Count > 0;
     }
 
+    /// <summary>
+    /// Consumes the oldest buffered input, if it exists.
+    /// </summary>
     public void Consume()
     {
         CleanExpiredInputs();
@@ -35,6 +44,9 @@ public class InputBuffer
         }
     }
 
+    /// <summary>
+    /// Removes all inputs that are older than the buffer time limit.
+    /// </summary>
     private void CleanExpiredInputs()
     {
         while (inputTimestamps.Count > 0)
