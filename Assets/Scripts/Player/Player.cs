@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private PlayerController controller;
+    private IJumpProvider jumpProvider;
+
     [SerializeField] private Transform spawnPoint;
 
     private ForceRequest constantForceRequest;
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour
 
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        jumpProvider = GetComponent<IJumpProvider>();
 
         if (spawnPoint)
             rigidBody.position = spawnPoint.position;
@@ -127,7 +129,7 @@ public class Player : MonoBehaviour
 
     private void ManageJump()
     {
-        if (controller.HasBufferedJump())
+        if (jumpProvider.HasBufferedJump())
         {
             if (isOnCoyoteTime)
             {
@@ -273,13 +275,13 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        float jumpForce = controller.GetJumpForce();
+        float jumpForce = jumpProvider.GetJumpForce();
         jumps++;
         ResetVelocityY();
 
         rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-        controller.ConsumeBufferedJump();
+        jumpProvider.ConsumeBufferedJump();
         lastJumpTime = Time.time;
 
     }

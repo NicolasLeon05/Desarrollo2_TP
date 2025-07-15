@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IJumpProvider
 {
     [SerializeField] private Player player;
     [SerializeField] private InputActionReference moveAction;
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     private InputBuffer jumpBuffer;
     [SerializeField] private float jumpBufferTime = 0.2f;
 
+    public bool HasBufferedJump() => jumpBuffer.Peek();
+    public void ConsumeBufferedJump() => jumpBuffer.Consume();
+    public float GetJumpForce() => jumpForce;
 
     private void Awake()
     {
@@ -168,22 +171,6 @@ public class PlayerController : MonoBehaviour
         if (!player.hasFlyCheat)
             jumpBuffer.Register();
     }
-
-    public bool HasBufferedJump()
-    {
-        return jumpBuffer.Peek();
-    }
-
-    public void ConsumeBufferedJump()
-    {
-        jumpBuffer.Consume();
-    }
-
-    public float GetJumpForce()
-    {
-        return jumpForce;
-    }
-
     private void OnFlyUp(InputAction.CallbackContext context)
     {
         flyUpInput = context.ReadValue<float>();
