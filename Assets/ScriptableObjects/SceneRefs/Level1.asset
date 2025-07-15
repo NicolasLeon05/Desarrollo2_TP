@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 2
   isActive: 1
-  isPersistent: 1
+  isPersistent: 0

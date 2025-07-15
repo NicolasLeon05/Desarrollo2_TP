@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class EndLevel : MonoBehaviour
+public class ResetGame : MonoBehaviour
 {
-    [SerializeField] private Level levelToLoad;
     private void OnTriggerEnter(Collider other)
     {
         SoundManager.Instance.PlaySound(SoundType.UnlockLevel, 0.3f);
 
-        SceneController.Instance.AddLevel(levelToLoad);
+        GameManager.Instance.ResetGame();
         gameObject.SetActive(false);
     }
 }

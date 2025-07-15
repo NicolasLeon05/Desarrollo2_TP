@@ -1,26 +1,16 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class NavigationController : MonoBehaviour
 {
-
-    private EventSystem eventSystem;
+    [SerializeField] private EventSystem eventSystem;
     private GameObject lastSelectedOption;
 
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject creditsMenu;
-    [SerializeField] private GameObject pauseMenu;
-
-    [SerializeField] private GameObject firstMainMenuButton;
-    [SerializeField] private GameObject firstCreditsMenuButton;
-    [SerializeField] private GameObject firstPauseMenuButton;
-
-    private List<GameObject> menus;
-    //HACER FUNCION QUE TOME LOS CHILDREN CON GAMEOBJECT MENU Y LOS AGREGUE A ESTA LISTA
+    private List<Menu> menus = new();
+    [SerializeField] Menu baseMenu;
+    private Menu activeMenu;
 
     [SerializeField] private InputActionReference navigateAction;
     private Vector2 navigateInput = Vector2.zero;
@@ -29,13 +19,14 @@ public class NavigationController : MonoBehaviour
     {
         eventSystem = GetComponent<EventSystem>();
         lastSelectedOption = eventSystem.firstSelectedGameObject;
+        AddMenusToList();
+        activeMenu = baseMenu.GetComponent<Menu>();
     }
 
     private void Start()
     {
-        mainMenu.SetActive(true);
-        creditsMenu.SetActive(false);
-        pauseMenu.SetActive(false);
+        SetBaseMenuActive();
+
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -73,18 +64,45 @@ public class NavigationController : MonoBehaviour
         {
             Debug.Log("Event system is null");
         }
-
     }
 
-    public void SetMenuActive(string menuName)
+    void AddMenusToList()
     {
-        foreach(var menu in menus)
+        menus.Clear();
+
+        foreach (Transform child in transform)
         {
-            if (menuName == menu.name)
-                menu.SetActive(true);
-            else
-                menu.SetActive(false);
+            if (child.TryGetComponent<Menu>(out var menu))
+                menus.Add(menu);
         }
+    }
+
+    private void SetBaseMenuActive()
+    {
+        SetMenuActive(baseMenu);
+    }
+
+    public void SetMenuActive(Menu menuToActivate)
+    {
+        foreach (var menu in menus)
+        {
+            bool isActive = menu == menuToActivate;
+            menu.gameObject.SetActive(isActive);
+
+            if (isActive)
+            {
+                activeMenu = menu;
+                eventSystem.SetSelectedGameObject(menu.firstButton);
+            }
+            else
+                menu.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetAllInactive()
+    {
+        foreach (var menu in menus)
+            menu.gameObject.SetActive(false);
     }
 
     private void OnNavigate(InputAction.CallbackContext obj)
@@ -97,50 +115,50 @@ public class NavigationController : MonoBehaviour
         return navigateInput != Vector2.zero;
     }
 
-    public void SetMainMenuActive()
-    {
-        mainMenu.SetActive(true);
-        creditsMenu.SetActive(false);
-        pauseMenu.SetActive(false);
-
-        eventSystem.SetSelectedGameObject(firstMainMenuButton);
-        lastSelectedOption = firstMainMenuButton;
-    }
-
-    public void SetCreditsActive()
-    {
-        mainMenu.SetActive(false);
-        creditsMenu.SetActive(true);
-        pauseMenu.SetActive(false);
-
-        eventSystem.SetSelectedGameObject(firstCreditsMenuButton);
-        lastSelectedOption = firstCreditsMenuButton;
-    }
-
-    public void SetPauseActive()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Time.timeScale = 0f;
-
-        mainMenu.SetActive(false);
-        creditsMenu.SetActive(false);
-        pauseMenu.SetActive(true);
-
-        eventSystem.SetSelectedGameObject(firstPauseMenuButton);
-        lastSelectedOption = firstPauseMenuButton;
-
-        GameManager.Instance.SetState(GameManager.GameState.Paused);
-    }
-
-    public void SetGameplayActive()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Time.timeScale = 1f;
-
-        mainMenu.SetActive(false);
-        creditsMenu.SetActive(false);
-        pauseMenu.SetActive(false);
-
-        GameManager.Instance.SetState(GameManager.GameState.Gameplay);
-    }
+    // public void SetMainMenuActive()
+    // {
+    //     mainMenu.SetActive(true);
+    //     creditsMenu.SetActive(false);
+    //     pauseMenu.SetActive(false);
+    //
+    //     eventSystem.SetSelectedGameObject(firstMainMenuButton);
+    //     lastSelectedOption = firstMainMenuButton;
+    // }
+    //
+    // public void SetCreditsActive()
+    // {
+    //     mainMenu.SetActive(false);
+    //     creditsMenu.SetActive(true);
+    //     pauseMenu.SetActive(false);
+    //
+    //     eventSystem.SetSelectedGameObject(firstCreditsMenuButton);
+    //     lastSelectedOption = firstCreditsMenuButton;
+    // }
+    //
+    // public void SetPauseActive()
+    // {
+    //     Cursor.lockState = CursorLockMode.None;
+    //     Time.timeScale = 0f;
+    //
+    //     mainMenu.SetActive(false);
+    //     creditsMenu.SetActive(false);
+    //     pauseMenu.SetActive(true);
+    //
+    //     eventSystem.SetSelectedGameObject(firstPauseMenuButton);
+    //     lastSelectedOption = firstPauseMenuButton;
+    //
+    //     GameManager.Instance.SetState(GameManager.GameState.Paused);
+    // }
+    //
+    // public void SetGameplayActive()
+    // {
+    //     Cursor.lockState = CursorLockMode.Locked;
+    //     Time.timeScale = 1f;
+    //
+    //     mainMenu.SetActive(false);
+    //     creditsMenu.SetActive(false);
+    //     pauseMenu.SetActive(false);
+    //
+    //     GameManager.Instance.SetState(GameManager.GameState.Gameplay);
+    // }
 }

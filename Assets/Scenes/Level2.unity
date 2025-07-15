@@ -750,6 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f2c67ae3577d64aa431aabff5884fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelToLoad: {fileID: 11400000, guid: f4d6df61d74058a43aee26df8801c76e, type: 2}
 --- !u!136 &924759467
 CapsuleCollider:
   m_ObjectHideFlags: 0

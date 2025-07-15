@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public enum GameState 
     { 
         Boot,
         MainMenu,
+        Credits,
         Gameplay,
         Paused
     }
@@ -31,12 +31,42 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SceneController.Instance.LoadLevel(firstLevel);
+        CurrentState = GameState.MainMenu;
     }
 
 
     public void SetState(GameState newState)
     {
         CurrentState = newState;
-        //Debug.Log("Game state set to: " + newState);
+    }
+
+    public void ResetGame()
+    {
+        if (Player.Instance != null)
+            Destroy(Player.Instance.gameObject);
+
+        SceneController.Instance.UnloadAllScenes();
+        SceneController.Instance.LoadLevel(firstLevel);
+        CurrentState = GameState.MainMenu;
+    }
+
+    public void PauseTime()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeTime()
+    {
+        Time.timeScale = 1f;
+    }
+
+    public void LockMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void ShowMouse()
+    {
+        Cursor.lockState = CursorLockMode.None;
     }
 }

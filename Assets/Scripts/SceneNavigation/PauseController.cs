@@ -4,17 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class PauseController : MonoBehaviour
 {
-    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Menu pauseMenu;
     [SerializeField] private InputActionReference pauseAction;
     [SerializeField] private NavigationController navigationController;
 
     private bool isPaused = false;
-
-    private void Awake()
-    {
-        Debug.Log("Active CameraController: " + name + " in scene: " + gameObject.scene.name);
-        pauseMenu.SetActive(false);
-    }
 
     private void OnEnable()
     {
@@ -37,7 +31,7 @@ public class PauseController : MonoBehaviour
         if (GameManager.Instance == null)
             return;
 
-        GameManager.GameState currentState = GameManager.Instance.CurrentState;
+        var currentState = GameManager.Instance.CurrentState;
 
         if (currentState == GameManager.GameState.Gameplay || currentState == GameManager.GameState.Paused)
         {
@@ -51,15 +45,20 @@ public class PauseController : MonoBehaviour
 
         if (isPaused)
         {
-            navigationController.SetPauseActive();
-            string sceneName = gameObject.scene.name;
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+            GameManager.Instance.PauseTime();
+            GameManager.Instance.ShowMouse();
+
+            navigationController.SetMenuActive(pauseMenu);
+            int pauseSceneBuildIndex = pauseMenu.gameObject.scene.buildIndex;
+            SceneController.Instance.SetSceneActive(pauseSceneBuildIndex);
         }
         else
         {
-            navigationController.SetGameplayActive();
-            int highestSceneIndex = SceneManager.sceneCount - 1;
-            SceneManager.SetActiveScene(SceneManager.GetSceneAt(highestSceneIndex));
+            GameManager.Instance.ResumeTime();
+            GameManager.Instance.LockMouse();
+
+            navigationController.SetAllInactive();
+            SceneController.Instance.SetSceneActive(SceneController.Instance.PreviousActiveScene.Index);
         }
     }
 
