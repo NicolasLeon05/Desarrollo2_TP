@@ -3,13 +3,20 @@ using UnityEngine;
 public class SceneTransitionButton : MonoBehaviour
 {
     [SerializeField] private Level levelToLoad;
+    private SceneController sceneController;
+
+
+    private void Awake()
+    {
+        ServiceProvider.TryGetService(out sceneController);
+    }
 
     /// <summary>
     /// Loads the assigned level, replacing current non-persistent scenes
     /// </summary>
     public void LoadLevel()
     {
-        SceneController.Instance.LoadLevel(levelToLoad);
+        sceneController.LoadLevel(levelToLoad);
     }
 
     /// <summary>
@@ -17,7 +24,7 @@ public class SceneTransitionButton : MonoBehaviour
     /// </summary>
     public void AddLevel()
     {
-        SceneController.Instance.AddLevel(levelToLoad);
+        sceneController.AddLevel(levelToLoad);
     }
 
     /// <summary>
@@ -25,7 +32,7 @@ public class SceneTransitionButton : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        SceneController.Instance.Exit();
+        sceneController.Exit();
     }
 
     /// <summary>

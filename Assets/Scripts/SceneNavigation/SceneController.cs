@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,7 +16,6 @@ public class SceneController : MonoBehaviour
     public SceneRef CurrentActiveScene => currentActiveScene;
     public SceneRef PreviousActiveScene => previousActiveScene;
 
-    public static SceneController Instance { get; private set; }
 
     /// <summary>
     /// Initializes the singleton instance of the SceneController.
@@ -26,14 +23,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        ServiceProvider.SetService(this, true);
 
         SaveBootScenes();
     }

@@ -12,7 +12,9 @@ public class EndLevel : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(SoundType.UnlockLevel, 0.3f);
 
-        SceneController.Instance.AddLevel(levelToLoad);
+        SceneController sceneController;
+        ServiceProvider.TryGetService(out sceneController);
+        sceneController.AddLevel(levelToLoad);
         gameObject.SetActive(false);
     }
 }

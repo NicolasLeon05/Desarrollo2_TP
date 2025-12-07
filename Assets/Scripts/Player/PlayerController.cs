@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IJumpProvider
 {
-    [SerializeField] private Player player;
+    private Player player;
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference jumpAction;
     [SerializeField] private InputActionReference dashAction;
@@ -46,6 +46,11 @@ public class PlayerController : MonoBehaviour, IJumpProvider
     private void Awake()
     {
         jumpBuffer = new InputBuffer(jumpBufferTime);
+    }
+
+    private void Start()
+    {
+        ServiceProvider.TryGetService(out player);
     }
 
     /// <summary>

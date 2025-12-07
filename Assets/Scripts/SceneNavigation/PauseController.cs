@@ -9,7 +9,14 @@ public class PauseController : MonoBehaviour
     [SerializeField] private NavigationController navigationController;
 
     private bool isPaused = false;
+    private SceneController sceneController;
+    private GameManager gameManager;
 
+    private void Awake()
+    {
+        ServiceProvider.TryGetService(out sceneController);
+        ServiceProvider.TryGetService(out gameManager);
+    }
     private void OnEnable()
     {
         if (pauseAction != null)
@@ -28,10 +35,10 @@ public class PauseController : MonoBehaviour
 
     private void OnPause(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance == null)
+        if (gameManager == null)
             return;
 
-        var currentState = GameManager.Instance.CurrentState;
+        var currentState = gameManager.CurrentState;
 
         if (currentState == GameManager.GameState.Gameplay || currentState == GameManager.GameState.Paused)
         {
@@ -45,22 +52,22 @@ public class PauseController : MonoBehaviour
 
         if (isPaused)
         {
-            GameManager.Instance.PauseTime();
-            GameManager.Instance.ShowCursor();
-            GameManager.Instance.SetState(GameManager.GameState.Paused);
+            gameManager.PauseTime();
+            gameManager.ShowCursor();
+            gameManager.SetState(GameManager.GameState.Paused);
 
             navigationController.SetMenuActive(pauseMenu);
             int pauseSceneBuildIndex = pauseMenu.gameObject.scene.buildIndex;
-            SceneController.Instance.SetSceneActive(pauseSceneBuildIndex);
+            sceneController.SetSceneActive(pauseSceneBuildIndex);
         }
         else
         {
-            GameManager.Instance.ResumeTime();
-            GameManager.Instance.LockCursor();
-            GameManager.Instance.SetState(GameManager.GameState.Gameplay);
+            gameManager.ResumeTime();
+            gameManager.LockCursor();
+            gameManager.SetState(GameManager.GameState.Gameplay);
 
             navigationController.SetAllInactive();
-            SceneController.Instance.SetSceneActive(SceneController.Instance.PreviousActiveScene.Index);
+            sceneController.SetSceneActive(sceneController.PreviousActiveScene.Index);
         }
     }
 

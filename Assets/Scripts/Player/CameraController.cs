@@ -24,7 +24,9 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        GameManager.Instance.LockCursor();
+        GameManager gameManager;
+        ServiceProvider.TryGetService(out gameManager);
+        gameManager.LockCursor();
 
         if (moveCamera != null)
         {
@@ -53,12 +55,13 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void TryAssignPlayerAndPivot()
     {
-        if (target == null && Player.Instance != null)
-            target = Player.Instance.transform;
+        Player player;
+        ServiceProvider.TryGetService(out player);
+        if (target == null && player != null)
+            target = player.transform;
 
         if (target == null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
                 target = player.transform;
         }

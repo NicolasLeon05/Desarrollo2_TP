@@ -7,9 +7,14 @@ public class EventListener : MonoBehaviour
     [SerializeField] private Menu victoryMenu;
 
     private Menu baseMenu;
+    private SceneController sceneController;
+    private GameManager gameManager;
 
     private void Start()
     {
+        ServiceProvider.TryGetService(out sceneController);
+        ServiceProvider.TryGetService(out gameManager);
+
         baseMenu = navigationController.baseMenu;
     }
 
@@ -34,22 +39,23 @@ public class EventListener : MonoBehaviour
 
     private void HandleReturnToMainMenu()
     {
-        GameManager.Instance.ResumeTime();
-        GameManager.Instance.ShowCursor();
-        SceneController.Instance.UnloadNonPersistentScenes();
-        GameManager.Instance.SetState(GameManager.GameState.MainMenu);
+
+        gameManager.ResumeTime();
+        gameManager.ShowCursor();
+        sceneController.UnloadNonPersistentScenes();
+        gameManager.SetState(GameManager.GameState.MainMenu);
     }
 
     private void HandleActivateBaseMenu()
     {
         navigationController.SetMenuActive(baseMenu);
-        GameManager.Instance.SetState(GameManager.GameState.MainMenu);
+        gameManager.SetState(GameManager.GameState.MainMenu);
     }
 
     private void HandleActivateMenu(Menu menu, GameManager.GameState state)
     {
         navigationController.SetMenuActive(menu);
-        GameManager.Instance.SetState(state);
+        gameManager.SetState(state);
     }
 
     private void HandleSetAllMenusInactive()
@@ -59,10 +65,10 @@ public class EventListener : MonoBehaviour
 
     private void HandleVictory()
     {
-        GameManager.Instance.ResumeTime();
-        GameManager.Instance.ShowCursor();
-        SceneController.Instance.UnloadNonPersistentScenes();
+        gameManager.ResumeTime();
+        gameManager.ShowCursor();
+        sceneController.UnloadNonPersistentScenes();
         navigationController.SetMenuActive(victoryMenu);
-        GameManager.Instance.SetState(GameManager.GameState.Victory);
+        gameManager.SetState(GameManager.GameState.Victory);
     }
 }

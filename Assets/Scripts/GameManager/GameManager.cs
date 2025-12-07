@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState 
-    { 
+    public enum GameState
+    {
         Boot,
         MainMenu,
         Credits,
@@ -15,24 +15,18 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Level firstLevel;
 
-    public static GameManager Instance { get; private set; }
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        ServiceProvider.SetService(this, true);
         CurrentState = GameState.Boot;
     }
 
     private void Start()
     {
         CurrentState = GameState.MainMenu;
-        SceneController.Instance.LoadLevel(firstLevel);
+        SceneController sceneController;
+        ServiceProvider.TryGetService(out sceneController);
+        sceneController.LoadLevel(firstLevel);
     }
 
     /// <summary>
@@ -49,11 +43,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ResetGame()
     {
-        if (Player.Instance != null)
-            Destroy(Player.Instance.gameObject);
-
-        SceneController.Instance.UnloadNonPersistentScenes();
-        SceneController.Instance.LoadLevel(firstLevel);
+        SceneController sceneController;
+        ServiceProvider.TryGetService(out sceneController);
+        sceneController.UnloadNonPersistentScenes();
+        sceneController.LoadLevel(firstLevel);
         CurrentState = GameState.MainMenu;
     }
 

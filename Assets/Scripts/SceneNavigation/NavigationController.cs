@@ -15,12 +15,15 @@ public class NavigationController : MonoBehaviour
     [SerializeField] private InputActionReference navigateAction;
     private Vector2 navigateInput = Vector2.zero;
 
+
+    private GameManager gameManager;
     /// <summary>
     /// Initializes the event system, adds all child menus to the list,
     /// sets the base menu as active, and stores the first selected button
     /// </summary>
     private void Awake()
     {
+        ServiceProvider.TryGetService(out gameManager);
         eventSystem = GetComponent<EventSystem>();
         lastSelectedOption = eventSystem.firstSelectedGameObject;
         AddMenusToList();
@@ -33,7 +36,7 @@ public class NavigationController : MonoBehaviour
     private void Start()
     {
         SetBaseMenuActive();
-        GameManager.Instance.ShowCursor();
+        gameManager.ShowCursor();
     }
 
     /// <summary>
@@ -55,7 +58,7 @@ public class NavigationController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        Debug.Log(GameManager.Instance.CurrentState);
+        Debug.Log(gameManager.CurrentState);
 
         if (eventSystem != null)
         {

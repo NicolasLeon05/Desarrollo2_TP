@@ -29,6 +29,9 @@ public class MenuTransitionButton : MonoBehaviour
     public void SetAllInactive()
     {
         GameEvents.TriggerSetAllMenusInactive();
-        GameManager.Instance.SetState(stateToTransition);
+
+        GameManager gameManager;
+        ServiceProvider.TryGetService(out gameManager);
+        gameManager.SetState(stateToTransition);
     }
 }

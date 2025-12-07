@@ -54,23 +54,13 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
-    public static Player Instance { get; private set; }
-
     /// <summary>
     /// Initializes the player instance, Rigidbody, Animator, and optional spawn position.
     /// Ensures only one instance exists using Singleton pattern.
     /// </summary>
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            Instance.ApplyTeleportCheat(spawnPoint);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        ServiceProvider.SetService(this, true);
 
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
