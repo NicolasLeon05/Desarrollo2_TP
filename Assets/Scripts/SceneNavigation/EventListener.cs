@@ -56,6 +56,7 @@ public class EventListener : MonoBehaviour
     {
         navigationController.SetAllInactive();
     }
+
     private void HandleVictory()
     {
         GameManager.Instance.ResumeTime();
