@@ -406,7 +406,7 @@ public class Player : MonoBehaviour
     private void UpdateAnimationStates()
     {
         bool isJumping = rigidBody.linearVelocity.y > 0.1f && !isOnGround;
-        bool isFalling = rigidBody.linearVelocity.y < -0.1f && !isOnGround;
+        bool isFalling = rigidBody.linearVelocity.y <= -0f && !isOnGround;
 
         Vector3 aux = rigidBody.linearVelocity;
         aux.y = 0;
