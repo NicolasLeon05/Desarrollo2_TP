@@ -4,11 +4,19 @@ using System.Collections.Generic;
 public static class ServiceProvider
 {
     private static readonly Dictionary<Type, object> Services = new();
+    private static readonly Dictionary<Type, List<object>> MultiServices = new();
 
     public static void SetService<T>(T service, bool overwriteIfFound = false)
     {
-        if (!Services.TryAdd(typeof(T), service) && overwriteIfFound)
-            Services[typeof(T)] = service;
+        var type = typeof(T);
+
+        if (!Services.TryAdd(type, service) && overwriteIfFound)
+            Services[type] = service;
+
+        if (!MultiServices.ContainsKey(type))
+            MultiServices[type] = new List<object>();
+
+        MultiServices[type].Add(service);
     }
 
     public static bool TryGetService<T>(out T service) where T : class
@@ -22,5 +30,23 @@ public static class ServiceProvider
 
         service = null;
         return false;
+    }
+
+    public static List<T> GetAllServices<T>() where T : class
+    {
+        var type = typeof(T);
+
+        if (!MultiServices.TryGetValue(type, out var list))
+            return new List<T>();
+
+        List<T> result = new();
+
+        foreach (var obj in list)
+        {
+            if (obj is T cast)
+                result.Add(cast);
+        }
+
+        return result;
     }
 }

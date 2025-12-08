@@ -59,14 +59,15 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void DestroyDuplicatedAudioListeners()
     {
-        AudioListener[] listeners = FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
-        if (listeners.Length > 1)
+        var listeners = ServiceProvider.GetAllServices<AudioListenerService>();
+
+        foreach (var listenerService in listeners)
         {
-            foreach (AudioListener listener in listeners)
-            {
-                if (listener.gameObject.scene.buildIndex != sceneToDestroyListenerFrom.Index)
-                    Destroy(listener);
-            }
+            AudioListener listener = listenerService.GetComponent<AudioListener>();
+
+            if (listener.gameObject.scene.buildIndex != sceneToDestroyListenerFrom.Index)
+                Destroy(listener);
         }
     }
+
 }
