@@ -5,7 +5,7 @@ public class GrappleSystem : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject hookPrefab;
     [SerializeField] private Transform shootPoint;
-    [SerializeField] public LayerMask hookableMask;
+    [SerializeField] private LayerMask hookableMask;
 
     [Header("Grapple Values")]
     [SerializeField] private float pullSpeed = 30f;
@@ -66,17 +66,33 @@ public class GrappleSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isPulling || currentHook == null)
-            return;
+        if (currentHook == null) return;
 
-        float dist = Vector3.Distance(player.transform.position, currentHook.transform.position);
-        if (dist <= stopDistance)
+        int mask = hookableMask.value;
+
+        Vector3 start = shootPoint.position;
+        Vector3 end = currentHook.transform.position;
+        Vector3 dir = (end - start).normalized;
+        float dist = Vector3.Distance(start, end);
+
+        if (Physics.Raycast(start, dir, out RaycastHit hit, dist, mask))
+        {
+            currentHook.transform.position = hit.point;
+            currentHook.ForceAttach();
+            OnHookAttached(currentHook);
+
+        }
+
+        if (!isPulling || currentHook == null) return;
+
+        float playerDist = Vector3.Distance(start, currentHook.transform.position);
+        if (playerDist <= stopDistance)
         {
             Cancel();
             return;
         }
 
-        Vector3 pullDir = (currentHook.transform.position - player.transform.position).normalized;
+        Vector3 pullDir = (currentHook.transform.position - start).normalized;
 
         var request = new ForceRequest
         {
@@ -87,4 +103,5 @@ public class GrappleSystem : MonoBehaviour
 
         player.StartGrapple(pullDir, pullSpeed);
     }
+
 }

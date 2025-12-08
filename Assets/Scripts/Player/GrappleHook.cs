@@ -6,7 +6,7 @@ public class GrappleHook : MonoBehaviour
 {
     [SerializeField] private float shootForce = 40f;
 
-    private Rigidbody rb;
+    private Rigidbody rigidBody;
     private LineRenderer lineRenderer;
 
     private Transform player;
@@ -18,7 +18,7 @@ public class GrappleHook : MonoBehaviour
         this.system = system;
         this.player = player;
 
-        rb = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
         lineRenderer = GetComponent<LineRenderer>();
         col = GetComponent<Collider>();
 
@@ -29,7 +29,7 @@ public class GrappleHook : MonoBehaviour
 
         StartCoroutine(EnableColliderNextFrame());
 
-        rb.AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+        rigidBody.AddForce(direction.normalized * shootForce, ForceMode.Impulse);
     }
 
     private IEnumerator EnableColliderNextFrame()
@@ -50,12 +50,18 @@ public class GrappleHook : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (system.IsHookable(other.gameObject))
+        if (system.IsHookable(other.gameObject) && !other.CompareTag("Player"))
         {
-            rb.useGravity = false;
-            rb.isKinematic = true;
+            rigidBody.useGravity = false;
+            rigidBody.isKinematic = true;
 
             system.OnHookAttached(this);
         }
+    }
+
+    public void ForceAttach()
+    {
+        rigidBody.useGravity = false;
+        rigidBody.isKinematic = true;
     }
 }
