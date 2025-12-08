@@ -45,6 +45,10 @@ public class Player : MonoBehaviour
     [Header("Brake")]
     private float brakeForce = 10f;
 
+    [Header("Grappling")]
+    private bool isGrappling = false;
+    private Vector3 grappleDirection;
+    private float grappleSpeed = 0f;
 
     [Header("Cheats")]
     public bool hasFlyCheat = false;
@@ -100,6 +104,12 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateAnimationStates();
+
+        if (isGrappling)
+        {
+            ApplyGrappleMovement();
+            return;
+        }
 
         if (IsDashing())
             return;
@@ -336,6 +346,26 @@ public class Player : MonoBehaviour
         velocity.y = 0;
         rigidBody.linearVelocity = velocity;
     }
+
+    public void StartGrapple(Vector3 direction, float speed)
+    {
+        isGrappling = true;
+        grappleDirection = direction.normalized;
+        grappleSpeed = speed;
+        rigidBody.useGravity = false;
+    }
+
+    public void StopGrapple()
+    {
+        isGrappling = false;
+        rigidBody.useGravity = true;
+    }
+
+    private void ApplyGrappleMovement()
+    {
+        rigidBody.AddForce(grappleDirection * grappleSpeed, ForceMode.VelocityChange);
+    }
+
 
     /// <summary>
     /// Uses a raycast to check whether the player is grounded.
