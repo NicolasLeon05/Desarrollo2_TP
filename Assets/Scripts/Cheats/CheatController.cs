@@ -9,8 +9,6 @@ public class CheatController : MonoBehaviour
 
     private Player player;
 
-    private Transform nextGoal;
-
     private void Start()
     {
         ServiceProvider.TryGetService(out player);
@@ -57,8 +55,11 @@ public class CheatController : MonoBehaviour
     /// </summary>
     public void SetObjective()
     {
-        nextGoal = GameObject.FindGameObjectWithTag("Goal").transform;
-        player.ApplyTeleportCheat(nextGoal);
+        GoalPoint goal;
+        if (ServiceProvider.TryGetService(out goal))
+        {
+            player.ApplyTeleportCheat(goal.transform);
+        }
     }
 
 }
