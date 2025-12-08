@@ -155,6 +155,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c8e0d9d205299d42ab069a470a86d27, type: 2}
   - {fileID: 11400000, guid: f4d6df61d74058a43aee26df8801c76e, type: 2}
   - {fileID: 11400000, guid: a46185532d3b1a149a9a294a77d049e0, type: 2}
+  - {fileID: 11400000, guid: 618e0fcda4738d243931b5dee08c333a, type: 2}
   bootLevel: {fileID: 11400000, guid: de903850ca3a1ec419eeeb56ceebf0e2, type: 2}
 --- !u!4 &188596518
 Transform:

@@ -7,9 +7,14 @@ public class CheatController : MonoBehaviour
     [SerializeField] private InputActionReference flyCheat;
     [SerializeField] private InputActionReference nextLevelCheat;
 
-    [SerializeField] private Player player;
+    private Player player;
 
     private Transform nextGoal;
+
+    private void Start()
+    {
+        ServiceProvider.TryGetService(out player);
+    }
 
     private void OnEnable()
     {

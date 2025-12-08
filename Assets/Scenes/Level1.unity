@@ -3378,7 +3378,6 @@ MonoBehaviour:
   speedCheat: {fileID: 4119254292921438816, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   flyCheat: {fileID: 2856107451056883337, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   nextLevelCheat: {fileID: -3951041289960971269, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  player: {fileID: 2095508632}
 --- !u!1001 &1286420861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5587,17 +5586,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1263184450}
   m_SourcePrefab: {fileID: 100100000, guid: 21f7c3f47ca1aaf49b58d4a7797814a2, type: 3}
---- !u!114 &2095508632 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3830371070754365254, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
-  m_PrefabInstance: {fileID: 3455396450131067612}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f279e51f68bf04697ce40154b915da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3455396450131067612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5654,6 +5642,14 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 233905929}
+    - target: {fileID: 3830371070754365254, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
+      propertyPath: airVelocityMultiplier
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3830371070754365254, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
+      propertyPath: groundLayerMask.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
     - target: {fileID: 5756506024946973537, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
       propertyPath: hookableMask.m_Bits
       value: 512
@@ -5661,6 +5657,14 @@ PrefabInstance:
     - target: {fileID: 7506570591192273837, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
       propertyPath: hookableMask.m_Bits
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436171971345394162, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
+      propertyPath: m_Height
+      value: 1.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436171971345394162, guid: 24c42a1e648229a419a2579d4f382a59, type: 3}
+      propertyPath: m_Center.y
+      value: 0.93
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

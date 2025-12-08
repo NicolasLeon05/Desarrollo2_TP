@@ -1222,6 +1222,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elevator
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9d6ed9b928d2be7478c10ad9f8cf7d7e, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9d6ed9b928d2be7478c10ad9f8cf7d7e, type: 3}
+      propertyPath: m_TagString
+      value: MovingPlataform
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1257,7 +1265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementType: 0
   totalMovement: 55
-  movementSpeed: 5
+  movementSpeed: 3.5
 --- !u!65 &1485566783
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1573,7 +1581,7 @@ PrefabInstance:
       addedObject: {fileID: 1988493148}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9e62e1cccd259454dbcbbd625114bac1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1988493153}
+      addedObject: {fileID: 1988493151}
   m_SourcePrefab: {fileID: 100100000, guid: 9e62e1cccd259454dbcbbd625114bac1, type: 3}
 --- !u!4 &1988493146 stripped
 Transform:
@@ -1622,7 +1630,7 @@ CapsuleCollider:
   m_Height: 0.008784927
   m_Direction: 1
   m_Center: {x: 0, y: -0.0024770894, z: -8.800391e-18}
---- !u!114 &1988493153
+--- !u!114 &1988493151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1631,9 +1639,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1988493147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cdf3bbfaa01702469f5a6da176cadf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 72f2c67ae3577d64aa431aabff5884fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelToLoad: {fileID: 11400000, guid: 618e0fcda4738d243931b5dee08c333a, type: 2}
 --- !u!1 &2020348135 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e0350e483ac479f40b3a9e050ef2ab92, type: 3}
