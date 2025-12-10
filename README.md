@@ -10,6 +10,7 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
   - Double jump
   - Flight (as a cheat)
   - Custom Camera
+  - Grappling Hook
 - Fully animated
 - Cheats toggle system (speed up, flight, teleport)
 - Multiple levels loaded additively
@@ -30,7 +31,7 @@ Jump Pepe is a 3D platformer in the style of Only Up, where you have to complete
 
 
 ### Game Patterns
-- Singletone
+- Service Locator
 - State Machine
 
 ---
